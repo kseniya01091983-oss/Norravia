@@ -1,0 +1,2550 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Norravia — новая норвежская авиакомпания. Северное гостеприимство, продуманный комфорт и международные маршруты из Осло.">
+  <meta name="theme-color" content="#f4fafb">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%2306111f'/%3E%3Cpath d='m12 39 41-22-16 30-9-10-16 2Z' fill='%231769ff'/%3E%3C/svg%3E">
+  <link rel="preload" as="image" href="assets/images/norravia-hero-flight-v3.webp" type="image/webp" fetchpriority="high">
+  <title>Norravia — северное гостеприимство в небе</title>
+  <style>
+    :root {
+      --night: #06111f;
+      --night-soft: #0a1c2f;
+      --panel: rgba(13, 35, 55, .72);
+      --panel-solid: #0c2236;
+      --ice: #dffaff;
+      --mist: #9cb7c4;
+      --aurora: #76b8ff;
+      --aurora-deep: #1769ff;
+      --gold: #a9ceff;
+      --line: rgba(196, 240, 244, .16);
+      --white: #f7fbfc;
+      --display: "Bodoni 72", Didot, "Times New Roman", serif;
+      --body: "Avenir Next", Avenir, "Gill Sans", Calibri, sans-serif;
+      --shadow: 0 22px 80px rgba(0, 0, 0, .32);
+      --radius: 26px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--night);
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--white);
+      font-family: var(--body);
+      background:
+        radial-gradient(circle at 73% 8%, rgba(82, 226, 197, .11), transparent 24rem),
+        radial-gradient(circle at 8% 42%, rgba(67, 137, 173, .11), transparent 31rem),
+        var(--night);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .16;
+      z-index: 20;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+    }
+
+    ::selection { color: var(--night); background: var(--aurora); }
+
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    .skip-link {
+      position: fixed;
+      left: 16px;
+      top: 10px;
+      z-index: 200;
+      padding: 10px 16px;
+      color: var(--night);
+      background: var(--ice);
+      border-radius: 30px;
+      transform: translateY(-160%);
+    }
+
+    .skip-link:focus { transform: translateY(0); }
+
+    .shell {
+      width: min(1200px, calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0 0 20px;
+      color: var(--aurora);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+      box-shadow: 0 0 12px currentColor;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1, h2, h3 {
+      font-family: var(--display);
+      font-weight: 400;
+      line-height: .98;
+    }
+
+    h2 {
+      max-width: 760px;
+      margin-bottom: 24px;
+      font-size: clamp(2.7rem, 6vw, 5.8rem);
+      letter-spacing: -.055em;
+    }
+
+    .lead {
+      max-width: 650px;
+      color: #b8ccd4;
+      font-size: clamp(1rem, 1.4vw, 1.18rem);
+    }
+
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 100;
+      padding: 18px 0;
+      transition: padding .3s ease, background .3s ease, border-color .3s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    .site-header.scrolled {
+      padding: 10px 0;
+      background: rgba(4, 15, 27, .82);
+      border-color: var(--line);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-size: .88rem;
+      font-weight: 700;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(223, 250, 255, .24);
+      border-radius: 50%;
+      color: var(--aurora);
+      background: rgba(255,255,255,.03);
+      box-shadow: inset 0 0 18px rgba(114, 234, 208, .08);
+    }
+
+    .brand-mark svg { width: 22px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(18px, 2.5vw, 34px);
+    }
+
+    .nav-links > a:not(.btn) {
+      position: relative;
+      color: #b8cbd2;
+      font-size: .78rem;
+      text-decoration: none;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .nav-links > a:not(.btn)::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: -7px;
+      height: 1px;
+      background: var(--aurora);
+      transition: right .25s ease;
+    }
+
+    .nav-links > a:not(.btn):hover::after,
+    .nav-links > a:not(.btn):focus-visible::after { right: 0; }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      color: var(--white);
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .menu-toggle span,
+    .menu-toggle::before,
+    .menu-toggle::after {
+      content: "";
+      display: block;
+      width: 18px;
+      height: 1px;
+      margin: 5px auto;
+      background: currentColor;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+
+    .menu-toggle.open span { opacity: 0; }
+    .menu-toggle.open::before { transform: translateY(6px) rotate(45deg); }
+    .menu-toggle.open::after { transform: translateY(-6px) rotate(-45deg); }
+
+    .btn {
+      position: relative;
+      isolation: isolate;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      min-height: 52px;
+      padding: 0 24px;
+      overflow: hidden;
+      color: var(--night);
+      background: var(--ice);
+      border: 1px solid var(--ice);
+      border-radius: 999px;
+      box-shadow: 0 10px 30px rgba(150, 232, 224, .08);
+      font: 700 .76rem/1 var(--body);
+      letter-spacing: .11em;
+      text-decoration: none;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, color .25s ease;
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      inset: -80% auto -80% -55%;
+      z-index: -1;
+      width: 42%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.85), transparent);
+      transform: skewX(-18deg);
+      transition: left .55s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-3px);
+      border-color: var(--aurora);
+      box-shadow: 0 16px 38px rgba(101, 225, 207, .2), 0 0 0 1px rgba(114, 234, 208, .18);
+    }
+
+    .btn:hover::before,
+    .btn:focus-visible::before { left: 120%; }
+
+    .btn--ghost {
+      color: var(--ice);
+      background: rgba(255,255,255,.025);
+      border-color: rgba(223, 250, 255, .28);
+      box-shadow: none;
+    }
+
+    .btn--small { min-height: 44px; padding: 0 19px; font-size: .68rem; }
+
+    .btn svg { width: 16px; transition: transform .25s ease; }
+    .btn:hover svg { transform: translateX(4px); }
+
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: grid;
+      align-items: center;
+      padding: 132px 0 74px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 70vw;
+      height: 32vw;
+      top: -10vw;
+      right: -12vw;
+      border-radius: 50%;
+      background: linear-gradient(120deg, transparent 5%, rgba(62, 218, 184, .13) 44%, rgba(63, 146, 175, .06) 69%, transparent 82%);
+      filter: blur(34px);
+      transform: rotate(-13deg);
+      animation: aurora 11s ease-in-out infinite alternate;
+    }
+
+    .hero-stars {
+      position: absolute;
+      inset: 0;
+      opacity: .5;
+      background-image:
+        radial-gradient(circle at 14% 25%, #fff 0 1px, transparent 1.5px),
+        radial-gradient(circle at 81% 31%, #fff 0 1px, transparent 1.5px),
+        radial-gradient(circle at 66% 17%, #fff 0 1px, transparent 1.5px),
+        radial-gradient(circle at 43% 58%, #fff 0 1px, transparent 1.5px),
+        radial-gradient(circle at 94% 70%, #fff 0 1px, transparent 1.5px);
+      background-size: 230px 210px, 300px 260px, 270px 220px, 320px 300px, 210px 240px;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr);
+      align-items: center;
+      gap: 4vw;
+    }
+
+    .hero-copy { max-width: 760px; }
+
+    .hero h1 {
+      margin: 0 0 28px;
+      font-size: clamp(4.5rem, 10.5vw, 9.8rem);
+      letter-spacing: -.075em;
+    }
+
+    .hero h1 span {
+      display: block;
+      margin: 6px 0 0 9px;
+      color: var(--aurora);
+      font: 600 clamp(.7rem, 1vw, .85rem)/1.2 var(--body);
+      letter-spacing: .45em;
+      text-transform: uppercase;
+    }
+
+    .hero-copy > p:not(.eyebrow) {
+      max-width: 560px;
+      color: #b9ccd4;
+      font-size: clamp(1.05rem, 1.7vw, 1.32rem);
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px; }
+
+    .launch-note {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 50px;
+      color: var(--mist);
+      font-size: .78rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--aurora);
+      box-shadow: 0 0 0 0 rgba(114, 234, 208, .45);
+      animation: pulse 2.2s infinite;
+    }
+
+    .hero-visual { position: relative; min-height: 520px; }
+
+    .orbit {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: min(42vw, 510px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(210, 246, 248, .11);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .orbit::before,
+    .orbit::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(210, 246, 248, .08);
+      border-radius: 50%;
+    }
+
+    .orbit::before { inset: 13%; }
+    .orbit::after { inset: 29%; }
+
+    .hero-plane {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: min(39vw, 480px);
+      color: var(--ice);
+      filter: drop-shadow(0 28px 32px rgba(0,0,0,.3)) drop-shadow(0 0 18px rgba(114,234,208,.12));
+      transform: translate(-50%, -50%) rotate(-9deg);
+      animation: plane-float 6s ease-in-out infinite;
+    }
+
+    .hero-plane .accent { fill: var(--aurora); }
+    .hero-plane .body { fill: url(#planeGradient); }
+    .hero-plane .window { fill: #15364b; }
+
+    .flight-tag {
+      position: absolute;
+      right: 2%;
+      bottom: 7%;
+      min-width: 210px;
+      padding: 18px 20px;
+      background: rgba(9, 27, 43, .72);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    .flight-tag small { color: var(--mist); letter-spacing: .13em; text-transform: uppercase; }
+    .flight-tag strong { display: block; margin-top: 5px; font-family: var(--display); font-size: 1.45rem; font-weight: 400; }
+
+    .scroll-cue {
+      position: absolute;
+      left: 50%;
+      bottom: 26px;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 52px;
+      border: 1px solid rgba(223, 250, 255, .22);
+      border-radius: 22px;
+      transform: translateX(-50%);
+    }
+
+    .scroll-cue::after {
+      content: "";
+      width: 3px;
+      height: 8px;
+      border-radius: 3px;
+      background: var(--aurora);
+      animation: scroll-dot 1.9s ease-in-out infinite;
+    }
+
+    section { position: relative; padding: clamp(88px, 12vw, 164px) 0; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: clamp(50px, 9vw, 130px);
+      align-items: start;
+    }
+
+    .about-copy { position: sticky; top: 140px; }
+
+    .manifesto {
+      padding: clamp(32px, 5vw, 70px);
+      background:
+        linear-gradient(135deg, rgba(18, 53, 75, .72), rgba(7, 24, 39, .78)),
+        var(--panel-solid);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .manifesto blockquote {
+      margin: 0 0 50px;
+      font: 400 clamp(2rem, 4vw, 4.2rem)/1.05 var(--display);
+      letter-spacing: -.04em;
+    }
+
+    .manifesto blockquote em { color: var(--aurora); font-style: italic; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .stat strong { display: block; color: var(--ice); font: 400 2.25rem/1 var(--display); }
+    .stat span { color: var(--mist); font-size: .74rem; text-transform: uppercase; letter-spacing: .1em; }
+
+    .routes-section { overflow: hidden; background: #071522; border-block: 1px solid var(--line); }
+    .routes-section::before {
+      content: "";
+      position: absolute;
+      width: 540px;
+      height: 540px;
+      top: 20%;
+      right: -220px;
+      background: rgba(58, 209, 180, .08);
+      filter: blur(100px);
+      border-radius: 50%;
+    }
+
+    .routes-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 50px;
+    }
+
+    .route-counter { text-align: right; color: var(--mist); font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; }
+    .route-counter strong { display: block; color: var(--aurora); font: 400 4rem/1 var(--display); letter-spacing: -.05em; }
+
+    .map-frame {
+      position: relative;
+      padding: 18px;
+      background: linear-gradient(145deg, rgba(13, 40, 58, .78), rgba(6, 20, 33, .9));
+      border: 1px solid rgba(207, 247, 247, .17);
+      border-radius: 32px;
+      box-shadow: 0 36px 100px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.03);
+    }
+
+    .map-frame::before {
+      content: "Маршрутная сеть · 2026";
+      position: absolute;
+      left: 38px;
+      top: 35px;
+      z-index: 3;
+      color: rgba(223, 250, 255, .56);
+      font-size: .64rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .world-map { display: block; width: 100%; min-height: 420px; border-radius: 20px; }
+    .world-map .grid-line { fill: none; stroke: rgba(214, 246, 247, .055); stroke-width: 1; }
+    .world-map .land { fill: #123147; stroke: rgba(155, 214, 219, .15); stroke-width: 1; }
+    .world-map .land-highlight { fill: #173b4d; }
+    .world-map .route { fill: none; stroke: url(#routeGradient); stroke-width: 1.8; stroke-linecap: round; stroke-dasharray: 5 8; opacity: .72; animation: dash 16s linear infinite; }
+    .world-map .route-glow { fill: none; stroke: var(--aurora); stroke-width: 7; opacity: .045; filter: url(#routeGlow); }
+    .world-map .moving-plane { fill: var(--ice); filter: drop-shadow(0 0 5px var(--aurora)); }
+
+    .map-node { cursor: pointer; outline: none; }
+    .map-node .node-ring { fill: rgba(114,234,208,.1); stroke: var(--aurora); stroke-width: 1; transition: transform .2s ease, fill .2s ease; transform-box: fill-box; transform-origin: center; }
+    .map-node .node-core { fill: var(--ice); filter: drop-shadow(0 0 5px var(--aurora)); }
+    .map-node text { fill: #d7e9ed; font: 600 10px var(--body); letter-spacing: .04em; paint-order: stroke; stroke: #091b2a; stroke-width: 3px; stroke-linejoin: round; }
+    .map-node:hover .node-ring,
+    .map-node:focus .node-ring,
+    .map-node.active .node-ring { fill: rgba(114,234,208,.28); transform: scale(1.55); }
+    .map-node.hub .node-ring { fill: rgba(217,187,118,.18); stroke: var(--gold); animation: hub-pulse 2.6s infinite; }
+    .map-node.hub .node-core { fill: var(--gold); }
+
+    .route-info {
+      position: absolute;
+      right: 38px;
+      bottom: 34px;
+      z-index: 4;
+      width: min(290px, calc(100% - 76px));
+      padding: 22px;
+      background: rgba(4, 18, 30, .88);
+      border: 1px solid rgba(185, 237, 235, .16);
+      border-radius: 18px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 48px rgba(0,0,0,.3);
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(14px);
+      transition: opacity .3s ease, transform .36s cubic-bezier(.22,.68,0,1), visibility 0s linear .36s;
+    }
+
+    .route-info small { color: var(--aurora); font-size: .65rem; letter-spacing: .16em; text-transform: uppercase; }
+    .route-info strong { display: block; margin: 5px 0 2px; font: 400 1.8rem/1.2 var(--display); }
+    .route-info span { color: var(--mist); font-size: .82rem; }
+
+    .country-info {
+      position: absolute;
+      left: 38px;
+      bottom: 34px;
+      z-index: 4;
+      width: min(350px, calc(100% - 76px));
+      min-height: 128px;
+      padding: 22px 24px;
+      background:
+        linear-gradient(135deg, rgba(10, 36, 52, .94), rgba(4, 18, 30, .9)),
+        rgba(4, 18, 30, .9);
+      border: 1px solid rgba(114, 234, 208, .2);
+      border-radius: 18px;
+      box-shadow: 0 18px 48px rgba(0,0,0,.3), inset 0 1px rgba(255,255,255,.035);
+      backdrop-filter: blur(14px);
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(14px);
+      transition: opacity .3s ease, transform .36s cubic-bezier(.22,.68,0,1), visibility 0s linear .36s;
+    }
+
+    .route-info.open,
+    .country-info.open {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition-delay: 0s;
+    }
+
+    .country-info::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 20px;
+      bottom: 20px;
+      width: 2px;
+      background: linear-gradient(transparent, var(--aurora), transparent);
+      box-shadow: 0 0 12px rgba(114,234,208,.45);
+    }
+
+    .country-info.refresh { animation: country-card-in .42s cubic-bezier(.22,.68,0,1); }
+    .country-info small { color: var(--aurora); font-size: .65rem; letter-spacing: .16em; text-transform: uppercase; }
+    .country-info strong { display: block; margin: 4px 0 8px; font: 400 1.65rem/1.15 var(--display); }
+    .country-info p { margin: 0; color: #a9c1ca; font-size: .8rem; line-height: 1.48; }
+
+    .destination-strip {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      padding-bottom: 8px;
+      overflow-x: auto;
+      scrollbar-color: var(--aurora-deep) transparent;
+    }
+
+    .destination-chip {
+      position: relative;
+      flex: 0 0 auto;
+      padding: 10px 15px;
+      color: #a8c0c9;
+      background: rgba(255,255,255,.025);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      box-shadow: 0 0 0 rgba(114,234,208,0);
+      font: 500 .72rem/1.2 var(--body);
+      cursor: pointer;
+      transition: color .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease, transform .25s ease;
+    }
+
+    .destination-chip:hover,
+    .destination-chip:focus-visible {
+      color: var(--ice);
+      border-color: rgba(114,234,208,.42);
+      outline: none;
+      transform: translateY(-2px);
+    }
+
+    .destination-chip.active {
+      color: var(--ice);
+      background: rgba(64, 184, 166, .13);
+      border-color: rgba(114,234,208,.72);
+      box-shadow: 0 0 0 1px rgba(114,234,208,.1), 0 0 22px rgba(114,234,208,.22), inset 0 0 15px rgba(114,234,208,.08);
+    }
+
+    .destination-chip.active::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      display: inline-block;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: var(--aurora);
+      box-shadow: 0 0 10px var(--aurora);
+      vertical-align: 1px;
+    }
+
+    .comfort-intro {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 70px;
+      align-items: end;
+      margin-bottom: 58px;
+    }
+
+    .comfort-intro .lead { margin-left: auto; }
+
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .benefit {
+      position: relative;
+      min-height: 310px;
+      padding: 30px;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(17, 46, 65, .76), rgba(7, 24, 39, .86));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      transition: transform .35s ease, border-color .35s ease, background .35s ease;
+    }
+
+    .benefit:nth-child(1), .benefit:nth-child(4) { grid-column: span 7; }
+    .benefit:nth-child(2), .benefit:nth-child(3) { grid-column: span 5; }
+    .benefit:hover { transform: translateY(-7px); border-color: rgba(114,234,208,.34); background: linear-gradient(145deg, rgba(20, 58, 77, .86), rgba(7, 27, 42, .92)); }
+
+    .benefit-number { color: var(--gold); font: 400 1rem var(--display); }
+    .benefit h3 { margin: 100px 0 16px; font-size: clamp(2rem, 3vw, 3.3rem); letter-spacing: -.04em; }
+    .benefit p { max-width: 470px; margin: 0; color: var(--mist); }
+
+    .benefit-icon {
+      position: absolute;
+      top: 26px;
+      right: 28px;
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      color: var(--aurora);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+    }
+
+    .benefit-icon svg { width: 27px; }
+
+    .launch-section { overflow: hidden; padding-block: 80px; }
+
+    .launch-card {
+      position: relative;
+      padding: clamp(48px, 8vw, 100px);
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 76% 8%, rgba(85, 224, 197, .2), transparent 34%),
+        linear-gradient(130deg, #102f43, #071b2c 70%);
+      border: 1px solid rgba(193, 241, 240, .18);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .launch-card::after {
+      content: "17";
+      position: absolute;
+      right: -2vw;
+      top: -4vw;
+      color: rgba(230, 250, 250, .035);
+      font: 400 min(34vw, 440px)/1 var(--display);
+      letter-spacing: -.1em;
+      pointer-events: none;
+    }
+
+    .launch-content { position: relative; z-index: 2; max-width: 900px; }
+    .launch-date { margin-bottom: 50px; font: 400 clamp(3.4rem, 8vw, 8rem)/.9 var(--display); letter-spacing: -.06em; }
+    .launch-date span { color: var(--aurora); }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(100px, 1fr));
+      gap: 12px;
+      max-width: 720px;
+    }
+
+    .time-box { padding: 20px 18px; border-top: 1px solid rgba(223,250,255,.2); }
+    .time-box strong { display: block; color: var(--ice); font: 400 clamp(2.6rem, 5vw, 5rem)/1 var(--display); font-variant-numeric: tabular-nums; }
+    .time-box span { color: var(--mist); font-size: .65rem; letter-spacing: .16em; text-transform: uppercase; }
+
+    .launch-status { margin: 28px 0 0; color: #b6cbd2; }
+
+    .final-cta { text-align: center; }
+    .final-cta h2 { margin-inline: auto; }
+    .final-cta .lead { margin: 0 auto 34px; }
+
+    footer { padding: 36px 0 48px; border-top: 1px solid var(--line); }
+    .footer-row { display: flex; justify-content: space-between; align-items: center; gap: 30px; }
+    .footer-copy { max-width: 480px; color: #829da8; font-size: .78rem; }
+    .footer-meta { color: #829da8; font-size: .7rem; letter-spacing: .09em; text-transform: uppercase; text-align: right; }
+
+    .scroll-plane {
+      position: fixed;
+      right: clamp(18px, 3vw, 50px);
+      top: 42%;
+      z-index: 60;
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      color: var(--ice);
+      background: rgba(8, 29, 45, .75);
+      border: 1px solid rgba(171, 232, 230, .2);
+      border-radius: 50%;
+      box-shadow: 0 12px 36px rgba(0,0,0,.28), 0 0 26px rgba(114,234,208,.07);
+      backdrop-filter: blur(12px);
+      padding: 0;
+      font: inherit;
+      appearance: none;
+      cursor: pointer;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate3d(0, 20px, 0) rotate(0deg);
+      transition: opacity .45s ease, border-color .25s ease, box-shadow .25s ease;
+      will-change: transform, opacity;
+    }
+
+    .scroll-plane.visible { opacity: 1; pointer-events: auto; }
+    .scroll-plane:hover,
+    .scroll-plane:focus-visible {
+      border-color: rgba(114,232,230,.68);
+      box-shadow: 0 16px 42px rgba(0,0,0,.32), 0 0 38px rgba(114,234,208,.24);
+    }
+    .scroll-plane:focus-visible { outline: 3px solid rgba(118,184,255,.48); outline-offset: 4px; }
+    .scroll-plane.moving {
+      border-color: rgba(114,234,208,.38);
+      box-shadow: 0 16px 42px rgba(0,0,0,.32), 0 0 34px rgba(114,234,208,.18);
+    }
+
+    .scroll-plane svg {
+      position: relative;
+      z-index: 2;
+      width: 31px;
+      filter: drop-shadow(0 0 7px rgba(114,234,208,.45));
+    }
+
+    .scroll-plane::before {
+      content: "";
+      position: absolute;
+      right: 42px;
+      top: 50%;
+      width: 78px;
+      height: 2px;
+      border-radius: 99px;
+      opacity: var(--trail-opacity, 0);
+      background: linear-gradient(90deg, transparent, rgba(114,234,208,.2) 34%, rgba(114,234,208,.95));
+      box-shadow: 0 -7px 0 -0.5px rgba(114,234,208,.14), 0 7px 0 -0.5px rgba(114,234,208,.1), 0 0 14px rgba(114,234,208,.35);
+      transform: translateY(-50%) scaleX(var(--trail-scale, .15));
+      transform-origin: right center;
+      transition: opacity .12s linear;
+      will-change: opacity, transform;
+    }
+    .scroll-plane::after {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border: 1px solid rgba(114,234,208,.08);
+      border-radius: 50%;
+    }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s cubic-bezier(.22,.68,0,1); }
+    .reveal.in-view { opacity: 1; transform: none; }
+
+    @keyframes aurora { to { transform: translate3d(-5vw, 3vw, 0) rotate(-7deg) scale(1.08); opacity: .72; } }
+    @keyframes plane-float { 50% { transform: translate(-50%, calc(-50% - 15px)) rotate(-7deg); } }
+    @keyframes pulse { 70% { box-shadow: 0 0 0 12px rgba(114,234,208,0); } 100% { box-shadow: 0 0 0 0 rgba(114,234,208,0); } }
+    @keyframes scroll-dot { 0%, 100% { transform: translateY(-8px); opacity: .2; } 50% { transform: translateY(8px); opacity: 1; } }
+    @keyframes dash { to { stroke-dashoffset: -260; } }
+    @keyframes hub-pulse { 50% { transform: scale(1.4); opacity: .7; } }
+    @keyframes country-card-in { from { opacity: .35; transform: translateY(9px); filter: blur(2px); } to { opacity: 1; transform: none; filter: none; } }
+
+    @media (max-width: 980px) {
+      .nav-links { display: none; position: absolute; top: 62px; left: 24px; right: 24px; padding: 24px; flex-direction: column; align-items: stretch; background: rgba(5, 20, 33, .96); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); }
+      .nav-links.open { display: flex; }
+      .nav-links > a:not(.btn) { padding: 8px 3px; }
+      .menu-toggle { display: block; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-copy { position: relative; z-index: 3; }
+      .hero-visual { position: absolute; right: -18vw; bottom: -9vw; width: 72vw; opacity: .5; }
+      .orbit { width: 58vw; }
+      .hero-plane { width: 55vw; }
+      .flight-tag { display: none; }
+      .about-grid, .comfort-intro { grid-template-columns: 1fr; }
+      .about-copy { position: static; }
+      .comfort-intro .lead { margin-left: 0; }
+      .routes-head { align-items: start; }
+      .world-map { min-height: 360px; }
+      .benefit:nth-child(n) { grid-column: span 6; }
+      .scroll-plane { right: 14px; width: 48px; height: 48px; }
+    }
+
+    @media (max-width: 700px) {
+      .shell { width: min(100% - 30px, 1200px); }
+      .site-header { padding: 12px 0; }
+      .brand { font-size: .78rem; }
+      .brand-mark { width: 34px; height: 34px; }
+      .hero { padding-top: 112px; }
+      .hero h1 { font-size: clamp(4rem, 23vw, 7rem); }
+      .hero h1 span { letter-spacing: .28em; }
+      .hero-visual { right: -45vw; bottom: -3vw; width: 115vw; }
+      .orbit { width: 90vw; }
+      .hero-plane { width: 88vw; }
+      .scroll-cue { display: none; }
+      .about-grid { gap: 38px; }
+      .manifesto { padding: 30px 24px; }
+      .stat-row { grid-template-columns: 1fr; }
+      .routes-head { display: block; }
+      .route-counter { margin-top: 24px; text-align: left; }
+      .map-frame { margin-inline: -7px; padding: 6px; border-radius: 24px; overflow: hidden; }
+      .map-frame::before { left: 20px; top: 22px; }
+      .world-map { width: 178%; min-height: 420px; transform: translateX(-30%); }
+      .world-map .map-node text { display: none; }
+      .map-frame { padding-bottom: 6px; transition: padding-bottom .36s cubic-bezier(.22,.68,0,1); }
+      .map-frame.has-route-info { padding-bottom: 304px; }
+      .route-info { right: 15px; bottom: 15px; left: 15px; width: auto; min-height: 88px; padding: 15px 18px; }
+      .country-info { right: 15px; bottom: 154px; left: 15px; width: auto; min-height: 130px; padding: 17px 19px; }
+      .country-info strong { font-size: 1.45rem; }
+      .country-info p { font-size: .76rem; }
+      .benefit:nth-child(n) { grid-column: 1 / -1; min-height: 280px; }
+      .benefit h3 { margin-top: 85px; }
+      .launch-card { padding: 45px 24px; border-radius: 26px; }
+      .countdown { grid-template-columns: repeat(2, 1fr); }
+      .footer-row { align-items: flex-start; flex-direction: column; }
+      .footer-meta { text-align: left; }
+      .scroll-plane { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+      .scroll-plane { display: none; }
+    }
+  </style>
+  <style id="arctic-editorial">
+    :root {
+      --editorial-bg: #eaf4ff;
+      --editorial-surface: #ffffff;
+      --editorial-ink: #071727;
+      --editorial-muted: #466474;
+      --editorial-line: #c9dce2;
+      --cobalt: #1769ff;
+      --cobalt-deep: #0b4fc4;
+      --map-night: #082a5b;
+      --ease-editorial: cubic-bezier(.22, .68, 0, 1);
+      --radius: 14px;
+      --hero-shift: 0px;
+      --hero-ticket-shift: 0px;
+    }
+
+    html { background: var(--editorial-bg); }
+
+    body {
+      color: var(--editorial-ink);
+      background:
+        radial-gradient(circle at 8% 8%, rgba(118, 184, 255, .2), transparent 25rem),
+        var(--editorial-bg);
+    }
+
+    body::before { opacity: .035; mix-blend-mode: multiply; }
+    ::selection { color: #fff; background: var(--cobalt); }
+    .shell { width: min(1380px, calc(100% - 72px)); }
+
+    h1, h2, h3 { color: inherit; text-wrap: balance; }
+    h2 { font-size: clamp(3rem, 5.7vw, 5.9rem); letter-spacing: -.035em; }
+    p { text-wrap: pretty; }
+    .lead { max-width: 68ch; color: var(--editorial-muted); }
+
+    .eyebrow {
+      margin-bottom: 22px;
+      color: var(--cobalt-deep);
+      font-size: .82rem;
+      font-weight: 650;
+      letter-spacing: .035em;
+      text-transform: none;
+    }
+    .eyebrow::before { width: 42px; background: var(--aurora-deep); box-shadow: none; }
+
+    .site-header { color: var(--editorial-ink); }
+    .site-header.scrolled {
+      padding: 10px 0;
+      background: rgba(247, 252, 253, .9);
+      border-color: rgba(31, 75, 96, .12);
+      backdrop-filter: blur(18px) saturate(135%);
+    }
+    .brand-mark {
+      color: var(--cobalt-deep);
+      background: #fff;
+      border-color: rgba(7, 23, 39, .13);
+      box-shadow: none;
+    }
+    .nav-links > a:not(.btn) { color: #274454; font-weight: 650; }
+    .nav-links > a:not(.btn)::after { background: var(--cobalt); }
+
+    .btn {
+      min-height: 54px;
+      color: #fff;
+      background: var(--editorial-ink);
+      border-color: var(--editorial-ink);
+      box-shadow: 0 6px 8px rgba(7, 23, 39, .12);
+      transition: transform .3s var(--ease-editorial), background .3s ease, box-shadow .3s ease;
+    }
+    .btn:hover,
+    .btn:focus-visible {
+      color: #fff;
+      background: var(--cobalt-deep);
+      border-color: var(--cobalt-deep);
+      box-shadow: 0 8px 8px rgba(10, 62, 168, .18);
+      transform: translateY(-3px);
+    }
+    .btn:focus-visible { outline: 3px solid rgba(20, 93, 255, .3); outline-offset: 3px; }
+    .btn--ghost {
+      color: var(--editorial-ink);
+      background: rgba(255, 255, 255, .58);
+      border-color: rgba(7, 23, 39, .24);
+      box-shadow: none;
+    }
+    .btn--ghost:hover,
+    .btn--ghost:focus-visible { color: var(--editorial-ink); background: #fff; border-color: var(--cobalt); }
+
+    .hero {
+      min-height: 0;
+      display: block;
+      padding: 104px 0 42px;
+      color: var(--editorial-ink);
+      background:
+        linear-gradient(90deg, rgba(244,250,251,.99) 0%, rgba(244,250,251,.9) 35%, rgba(244,250,251,.06) 70%),
+        var(--editorial-bg);
+      border-bottom: 0;
+      isolation: isolate;
+    }
+    .hero::before {
+      width: 52vw;
+      height: 52vw;
+      top: -18vw;
+      right: -12vw;
+      background: rgba(20, 93, 255, .11);
+      filter: blur(90px);
+      animation: none;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      z-index: 2;
+      height: 16%;
+      pointer-events: none;
+      background: linear-gradient(transparent, var(--editorial-bg));
+    }
+    .hero-stars, .orbit, .hero-plane { display: none; }
+    .hero-grid {
+      z-index: 3;
+      grid-template-columns: minmax(420px, .83fr) minmax(600px, 1.17fr);
+      gap: 0;
+      align-items: start;
+    }
+    .hero-copy { position: relative; z-index: 5; max-width: 650px; padding-top: 54px; }
+    .hero h1 {
+      margin-bottom: 28px;
+      color: var(--editorial-ink);
+      font-size: clamp(4.6rem, 7.6vw, 6rem);
+      letter-spacing: -.035em;
+      line-height: .91;
+    }
+    .hero h1 span {
+      margin: 17px 0 0 5px;
+      color: var(--cobalt-deep);
+      font-size: clamp(.69rem, .82vw, .82rem);
+      letter-spacing: .28em;
+    }
+    .hero-copy > p:not(.eyebrow) { max-width: 52ch; color: #294b5d; font-size: clamp(1.05rem, 1.32vw, 1.24rem); }
+    .hero-actions { margin-top: 34px; }
+    .launch-note { margin-top: 44px; color: #476677; }
+    .pulse {
+      background: var(--aurora-deep);
+      box-shadow: 0 0 0 0 rgba(23,105,255,.42);
+    }
+
+    .brand-mark { box-shadow: inset 0 0 18px rgba(118,184,255,.1); }
+    .btn { box-shadow: 0 8px 8px rgba(7,23,39,.1); }
+    .btn:hover,
+    .btn:focus-visible { box-shadow: 0 12px 18px rgba(23,105,255,.18), 0 0 0 1px rgba(118,184,255,.2); }
+    .hero::before {
+      background: linear-gradient(120deg, transparent 5%, rgba(23,105,255,.13) 44%, rgba(118,184,255,.08) 69%, transparent 82%);
+    }
+
+    .hero-visual { min-height: 610px; margin: 0 -9vw -4px -9vw; }
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      transform: translate3d(0, var(--hero-shift), 0);
+      animation: hero-unveil 1.15s var(--ease-editorial) both;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 20%, #000 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 20%, #000 100%);
+    }
+    .hero-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 61% center;
+      transform-origin: 67% 46%;
+      animation: hero-cruise 8.4s ease-in-out infinite;
+      will-change: transform;
+    }
+    .hero-ticket {
+      position: absolute;
+      left: 9%;
+      bottom: 13%;
+      z-index: 3;
+      width: 285px;
+      padding: 18px 20px;
+      color: var(--editorial-ink);
+      background: rgba(255,255,255,.92);
+      border-radius: 12px;
+      box-shadow: 0 8px 8px rgba(7,23,39,.14);
+      transform: translate3d(0, var(--hero-ticket-shift), 0) rotate(-4deg);
+    }
+    .hero-ticket-top { display: flex; justify-content: space-between; gap: 16px; color: var(--cobalt-deep); font-size: .67rem; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
+    .hero-ticket-route { display: flex; align-items: center; justify-content: space-between; margin: 17px 0 12px; font: 400 2rem/1 var(--display); }
+    .hero-ticket-route span { width: 54px; height: 1px; background: var(--aurora-deep); }
+    .hero-ticket-meta { display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #cedfe4; color: #496675; font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; }
+
+    .ticket-layer,
+    .final-docs {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .ticket-mount,
+    .bag-tag-mount { position: absolute; transform-origin: left top; }
+
+    .boarding-pass {
+      width: 620px;
+      min-height: 250px;
+      display: flex;
+      overflow: hidden;
+      color: #082a5b;
+      background: #f7fbff;
+      border-radius: 12px;
+      box-shadow: 0 8px 8px rgba(7, 31, 73, .2);
+      font-family: var(--body);
+      animation: ticket-float 8.4s ease-in-out infinite;
+    }
+
+    .bp-main,
+    .bp-stub { border-top: 11px solid #1769ff; }
+    .bp-main { flex: 1; padding: 15px 20px 14px; }
+    .bp-stub {
+      width: 178px;
+      flex: 0 0 178px;
+      padding: 15px 15px 12px;
+      border-left: 1px dashed #76b8ff;
+      background: #edf5ff;
+    }
+
+    .bp-header,
+    .bp-stub-header,
+    .bp-bottom,
+    .bp-stub-route,
+    .bp-stub-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .bp-brand { color: #1769ff; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+    .bp-document { color: #4e6f94; font-size: .69rem; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; }
+
+    .bp-route {
+      display: grid;
+      grid-template-columns: 1fr 92px 1fr;
+      align-items: end;
+      gap: 14px;
+      margin: 13px 0 12px;
+    }
+    .bp-airport small,
+    .bp-field small,
+    .bp-stub-field small,
+    .bag-label {
+      display: block;
+      margin-bottom: 2px;
+      color: #6381a3;
+      font-size: .57rem;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+    .bp-airport strong { display: block; font: 400 3.25rem/.82 var(--display); letter-spacing: -.035em; }
+    .bp-airport span { color: #315479; font-size: .7rem; }
+    .bp-route-line { position: relative; height: 1px; margin-bottom: 23px; background: #76b8ff; }
+    .bp-route-line::after { content: "✈"; position: absolute; right: -2px; top: 50%; color: #1769ff; font-size: 1rem; transform: translateY(-53%); }
+
+    .bp-fields {
+      display: grid;
+      grid-template-columns: 1.65fr .72fr .9fr .72fr .62fr;
+      gap: 10px;
+      padding: 9px 0 8px;
+      border-block: 1px solid #cbdff7;
+    }
+    .bp-field strong,
+    .bp-stub-field strong { display: block; font-size: .77rem; line-height: 1.15; letter-spacing: .025em; white-space: nowrap; }
+    .bp-field--passenger strong { font-size: .72rem; }
+    .bp-bottom { margin-top: 10px; }
+    .bp-barcode { width: 196px; height: 34px; color: #082a5b; }
+    .bp-code-caption { color: #6784a4; font-size: .5rem; letter-spacing: .15em; }
+    .bp-concept { max-width: 155px; color: #496b91; font-size: .5rem; line-height: 1.35; text-align: right; letter-spacing: .08em; text-transform: uppercase; }
+
+    .bp-stub-header { margin-bottom: 12px; }
+    .bp-stub-header .bp-brand { font-size: .68rem; }
+    .bp-stub-route { align-items: end; margin-bottom: 12px; }
+    .bp-stub-route strong { font: 400 2.05rem/.9 var(--display); }
+    .bp-stub-route span { color: #1769ff; font-size: 1rem; }
+    .bp-stub-row { padding: 7px 0; border-top: 1px solid #cbdff7; }
+    .bp-stub-field { min-width: 0; }
+    .bp-stub-field strong { font-size: .68rem; }
+    .bp-qr { width: 48px; height: 48px; color: #082a5b; }
+    .bp-stub-foot { display: flex; align-items: end; justify-content: space-between; gap: 8px; margin-top: 8px; }
+    .bp-stub-foot span { color: #6381a3; font-size: .46rem; line-height: 1.25; letter-spacing: .06em; text-transform: uppercase; }
+
+    .bag-tag {
+      width: 154px;
+      min-height: 315px;
+      padding: 16px 14px;
+      overflow: hidden;
+      color: #082a5b;
+      background: #f7fbff;
+      border-top: 13px solid #1769ff;
+      border-radius: 10px;
+      box-shadow: 0 8px 8px rgba(7, 31, 73, .2);
+      animation: tag-float 8.8s ease-in-out infinite;
+    }
+    .bag-brand { color: #1769ff; font-size: .68rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .bag-route { margin: 16px 0 12px; padding-block: 12px; border-block: 1px solid #cbdff7; text-align: center; }
+    .bag-route strong { display: block; font: 400 3rem/.84 var(--display); letter-spacing: -.035em; }
+    .bag-route span { color: #1769ff; font-size: 1rem; }
+    .bag-data { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .bag-data strong { display: block; font-size: .66rem; }
+    .bag-barcode { width: 126px; height: 42px; margin: 13px 0 3px; color: #082a5b; }
+    .bag-number { color: #52749a; font-size: .49rem; letter-spacing: .12em; text-align: center; }
+    .bag-concept { margin-top: 12px; color: #1769ff; font-size: .48rem; font-weight: 700; letter-spacing: .09em; text-align: center; text-transform: uppercase; }
+
+    .ticket-mount--hero-primary {
+      left: 10%;
+      bottom: 8%;
+      transform: translate3d(0, var(--hero-ticket-shift), 0) rotate(-4deg) scale(.53);
+    }
+    .ticket-mount--hero-secondary {
+      right: -2%;
+      bottom: 1%;
+      transform: translate3d(0, calc(var(--hero-ticket-shift) * .5), 0) rotate(7deg) scale(.47);
+      transform-origin: right bottom;
+    }
+    .ticket-mount--hero-secondary .boarding-pass { animation-delay: -3.4s; }
+
+    .launch-content { z-index: 5; }
+
+    .final-docs { z-index: 2; }
+    .final-cta .shell { z-index: 4; }
+    .ticket-mount--final { right: 1%; bottom: 3%; transform: rotate(5deg) scale(.5); transform-origin: right bottom; }
+    .bag-tag-mount--final { right: 3%; bottom: 5%; transform: rotate(9deg) scale(.62); transform-origin: right bottom; }
+    .ticket-mount--final + .bag-tag-mount--final { right: 0; }
+
+    @keyframes ticket-float {
+      0%, 100% { translate: 0 -2px; rotate: -.18deg; }
+      50% { translate: 0 5px; rotate: .22deg; }
+    }
+    @keyframes tag-float {
+      0%, 100% { translate: 0 2px; rotate: .18deg; }
+      50% { translate: 0 -5px; rotate: -.22deg; }
+    }
+    .flight-tag {
+      right: 5%;
+      top: 9%;
+      bottom: auto;
+      min-width: 220px;
+      color: var(--editorial-ink);
+      background: rgba(255,255,255,.88);
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 8px 8px rgba(7,23,39,.13);
+    }
+    .flight-tag small { color: #537080; }
+    .scroll-cue { display: none; }
+
+    section { padding: clamp(104px, 11vw, 168px) 0; }
+    #about { padding-top: 128px; background: var(--editorial-bg); }
+    .about-grid {
+      grid-template-columns: .8fr 1.2fr;
+      gap: 52px 74px;
+      align-items: center;
+    }
+    .about-copy { position: static; align-self: start; padding-top: 22px; }
+    .about-copy h2 { font-size: clamp(3rem, 4.5vw, 4.8rem); }
+    .about-photo {
+      position: relative;
+      min-height: 520px;
+      margin: 0;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+    .about-photo img { width: 100%; height: 100%; min-height: 520px; display: block; object-fit: cover; }
+    .about-photo figcaption {
+      position: absolute;
+      left: 24px;
+      bottom: 22px;
+      padding: 9px 12px;
+      color: #fff;
+      background: rgba(6,21,34,.82);
+      border-radius: 999px;
+      font-size: .72rem;
+      letter-spacing: .06em;
+    }
+    .manifesto {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1.22fr .78fr;
+      gap: 26px 72px;
+      padding: clamp(42px, 6vw, 82px);
+      color: #f7fbfc;
+      background:
+        radial-gradient(circle at 83% 18%, rgba(23,105,255,.24), transparent 24rem),
+        linear-gradient(135deg, #082a5b, #0b3c82);
+      border: 0;
+      border-radius: 14px;
+      box-shadow: none;
+    }
+    .manifesto blockquote { grid-row: 1 / 3; margin: 0; letter-spacing: -.035em; }
+    .manifesto .lead { color: #c3d7df; }
+    .manifesto .stat-row { align-self: end; }
+
+    .routes-section {
+      color: #f7fbfc;
+      background:
+        radial-gradient(circle at 78% 24%, rgba(118,184,255,.2), transparent 30rem),
+        linear-gradient(145deg, #082a5b, #0b3c82);
+      border-block: 0;
+    }
+    .routes-section h2 { color: #f7fbfc; }
+    .routes-section .lead { color: #b7ccd4; }
+    .routes-section .eyebrow { color: var(--aurora); }
+    .route-counter strong { color: var(--aurora); }
+    .map-frame {
+      padding: 18px;
+      border: 0;
+      border-radius: 14px;
+      box-shadow: none;
+      background: #f1f7ff;
+    }
+    .map-frame::before { color: rgba(8,42,91,.58); }
+    .world-map {
+      border-radius: 10px;
+      background: #edf2f6;
+    }
+    .map-atlas { opacity: .86; filter: brightness(1.18) saturate(1.16) contrast(.92) hue-rotate(4deg); }
+    .world-map .grid-line,
+    .world-map .land { display: none; }
+    .world-map .route { stroke-width: 1.55; opacity: .88; }
+    .world-map .route-glow { stroke: #0b4fc4; stroke-width: 5; opacity: .065; }
+    .world-map .moving-plane { fill: #082a5b; filter: drop-shadow(0 0 3px rgba(255,255,255,.9)); }
+    .map-node .node-ring {
+      fill: rgba(255,255,255,.001);
+      stroke: transparent;
+      stroke-width: 1.35;
+      transition: transform .22s var(--ease-editorial), fill .22s ease, stroke .22s ease;
+    }
+    .map-node .node-core { fill: #082a5b; filter: none; }
+    .map-node text {
+      fill: #102d4c;
+      stroke: none;
+      paint-order: normal;
+      font-weight: 700;
+    }
+    .map-node:hover .node-ring,
+    .map-node:focus .node-ring,
+    .map-node.active .node-ring { fill: rgba(118,184,255,.13); stroke: #082a5b; transform: scale(1.32); }
+    .map-node.hub .node-ring { fill: rgba(118,184,255,.1); stroke: #082a5b; }
+    .map-node.hub .node-core { fill: #082a5b; }
+    .route-info,
+    .country-info { background: rgba(7,31,73,.94); border-color: rgba(118,184,255,.32); }
+    .destination-chip:hover,
+    .destination-chip:focus-visible { border-color: rgba(118,184,255,.7); }
+    .destination-chip.active { background: rgba(23,105,255,.22); border-color: #76b8ff; box-shadow: 0 0 18px rgba(118,184,255,.25); }
+    .route-info, .country-info { border-radius: 12px; box-shadow: none; }
+    .country-info::before { display: none; }
+
+    #comfort { color: var(--editorial-ink); background: #f1f7ff; }
+    .comfort-intro { margin-bottom: 48px; }
+    .comfort-photo { position: relative; height: min(54vw, 650px); margin: 0 0 54px; overflow: hidden; background: #dceaff; border-radius: 14px; }
+    .comfort-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center 47%;
+      filter: grayscale(.6) saturate(.74) contrast(1.06) brightness(.98) hue-rotate(4deg);
+    }
+    .comfort-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: rgba(23,105,255,.13);
+      mix-blend-mode: color;
+    }
+    .benefit-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0;
+      overflow: hidden;
+      color: #f7fbff;
+      background:
+        radial-gradient(circle at 88% 12%, rgba(23,105,255,.22), transparent 24rem),
+        linear-gradient(135deg, #082a5b, #0b3c82);
+      border: 0;
+      border-radius: 14px;
+    }
+    .benefit:nth-child(n) {
+      grid-column: auto;
+      min-height: 310px;
+      padding: 42px 44px 46px;
+      color: #f7fbff;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      outline: none;
+      transition: background .3s var(--ease-editorial), color .3s var(--ease-editorial);
+    }
+    .benefit:nth-child(odd) { border-right: 1px solid rgba(202,224,255,.18); }
+    .benefit:nth-child(n+3) { border-top: 1px solid rgba(202,224,255,.18); }
+    .benefit:hover,
+    .benefit:focus-visible {
+      color: #fff;
+      background: rgba(23,105,255,.16);
+      transform: none;
+    }
+    .benefit:focus-visible { box-shadow: inset 0 0 0 2px #76b8ff; }
+    .benefit-number { color: #76b8ff; font-size: 1.08rem; }
+    .benefit h3 { margin: 96px 0 16px; color: #f7fbff; font-size: clamp(2rem, 2.7vw, 3rem); letter-spacing: -.035em; }
+    .benefit p { color: #cfe0f4; }
+    .benefit-icon {
+      top: 38px;
+      right: 42px;
+      width: 52px;
+      height: 52px;
+      color: #76b8ff;
+      border-color: rgba(202,224,255,.26);
+    }
+
+    .launch-section { padding-block: 88px; background: var(--editorial-bg); }
+    .launch-card {
+      min-height: 740px;
+      display: flex;
+      align-items: center;
+      padding: clamp(48px, 7vw, 92px);
+      color: #f7fbfc;
+      background: linear-gradient(135deg, #082a5b, #0b3c82);
+      border: 0;
+      border-radius: 14px;
+      box-shadow: none;
+    }
+    .launch-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(90deg, #082a5b 0%, rgba(8,42,91,.98) 34%, rgba(11,60,130,.5) 62%, rgba(11,60,130,.05) 100%);
+    }
+    .launch-card::after { display: none; }
+    .launch-art { position: absolute; inset: 0 0 0 32%; margin: 0; }
+    .launch-art img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 58% center; }
+    .launch-content { position: relative; z-index: 5; max-width: 690px; }
+    .launch-content h2 { color: #f7fbfc; }
+    .launch-content .eyebrow { color: var(--aurora); }
+    .launch-date { letter-spacing: -.035em; }
+    .launch-status { max-width: 58ch; color: #c2d5dc; }
+
+    .final-cta {
+      min-height: 700px;
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+      text-align: left;
+      background: #fff;
+    }
+    .final-cta::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 0 38%;
+      opacity: .66;
+      background: url("assets/images/norravia-hero-arctic.webp") 61% center / cover no-repeat;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 26%);
+      mask-image: linear-gradient(90deg, transparent, #000 26%);
+    }
+    .final-cta .shell { position: relative; z-index: 4; }
+    .final-cta h2 { max-width: 760px; margin-inline: 0; }
+    .final-cta .lead { margin: 0 0 34px; }
+
+    footer { color: #f7fbfc; background: #071f49; border-top: 0; }
+    footer .brand-mark { color: var(--aurora); background: transparent; border-color: rgba(223,250,255,.25); }
+    .footer-copy, .footer-meta { color: #9cb7c4; }
+
+    .scroll-plane {
+      color: #fff;
+      background: rgba(8, 36, 56, .88);
+      border-color: rgba(20,93,255,.25);
+      box-shadow: 0 6px 8px rgba(7,23,39,.24), 0 0 28px rgba(118,184,255,.18);
+      backdrop-filter: blur(12px) saturate(130%);
+    }
+    .scroll-plane.moving { border-color: rgba(118,184,255,.7); box-shadow: 0 8px 8px rgba(7,23,39,.28), 0 0 30px rgba(23,105,255,.28); }
+    .scroll-plane:hover,
+    .scroll-plane:focus-visible {
+      border-color: rgba(118,184,255,.78);
+      box-shadow: 0 10px 16px rgba(7,23,39,.28), 0 0 34px rgba(23,105,255,.32);
+    }
+    .scroll-plane svg { filter: drop-shadow(0 0 7px rgba(118,184,255,.52)); }
+    .scroll-plane::before {
+      background: linear-gradient(90deg, transparent, rgba(118,184,255,.2) 34%, rgba(23,105,255,.96));
+      box-shadow: 0 -7px 0 -.5px rgba(118,184,255,.14), 0 7px 0 -.5px rgba(118,184,255,.1), 0 0 14px rgba(23,105,255,.35);
+    }
+    .scroll-plane::after { border-color: rgba(20,93,255,.14); }
+
+    .reveal { opacity: 1; transform: none; }
+    .reveal.reveal-armed { opacity: 0; transform: translateY(24px); }
+    .reveal.reveal-armed.in-view { opacity: 1; transform: none; }
+
+    @keyframes hero-unveil {
+      from { opacity: 0; clip-path: inset(0 0 0 28%); transform: translate3d(28px, 0, 0); }
+      to { opacity: 1; clip-path: inset(0); transform: translate3d(0, var(--hero-shift), 0); }
+    }
+    @keyframes hero-cruise {
+      0%, 100% { transform: scale(1.025) translate3d(0, -5px, 0) rotate(-.28deg); }
+      50% { transform: scale(1.045) translate3d(-4px, 8px, 0) rotate(.34deg); }
+    }
+    @keyframes pulse {
+      70% { box-shadow: 0 0 0 12px rgba(23,105,255,0); }
+      100% { box-shadow: 0 0 0 0 rgba(23,105,255,0); }
+    }
+
+    @media (max-width: 1180px) {
+      .shell { width: min(100% - 48px, 1380px); }
+      .hero-grid { grid-template-columns: minmax(390px, .9fr) minmax(500px, 1.1fr); }
+      .hero-visual { margin-right: -16vw; }
+      .hero-ticket { left: 4%; }
+      .ticket-mount--hero-primary { left: 3%; transform: translate3d(0, var(--hero-ticket-shift), 0) rotate(-4deg) scale(.46); }
+      .ticket-mount--hero-secondary { right: -9%; transform: rotate(7deg) scale(.4); }
+    }
+
+    @media (max-width: 980px) {
+      .nav-links { color: #f7fbfc; background: rgba(6,21,34,.97); border-radius: 14px; }
+      .nav-links > a:not(.btn) { color: #d7e9ed; }
+      .menu-toggle { display: block; color: var(--editorial-ink); background: #fff; border-color: rgba(7,23,39,.16); }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-visual { position: absolute; inset: 19% -24% 0 35%; width: auto; min-height: 0; margin: 0; opacity: .62; }
+      .hero-copy { max-width: 610px; }
+      .hero-photo { -webkit-mask-image: linear-gradient(90deg, transparent, #000 38%); mask-image: linear-gradient(90deg, transparent, #000 38%); }
+      .hero-ticket, .flight-tag { display: none; }
+      .ticket-mount--hero-secondary,
+      .bag-tag-mount--final { display: none; }
+      .ticket-mount--hero-primary { left: 44%; bottom: 4%; transform: rotate(-3deg) scale(.42); }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-photo { min-height: 430px; }
+      .manifesto { grid-template-columns: 1fr; }
+      .manifesto blockquote { grid-row: auto; }
+      .comfort-intro { grid-template-columns: 1fr; }
+      .launch-art { left: 20%; opacity: .62; }
+      .launch-card::before { background: linear-gradient(90deg, #082a5b 0%, rgba(8,42,91,.94) 54%, rgba(11,60,130,.28)); }
+    }
+
+    @media (max-width: 700px) {
+      .shell { width: min(100% - 30px, 1380px); }
+      .hero { min-height: 760px; }
+      .hero h1 { font-size: clamp(3.6rem, 20vw, 5.4rem); }
+      .hero-visual { inset: 34% -70% 0 17%; opacity: .42; }
+      .hero-copy > p:not(.eyebrow) { max-width: 36ch; }
+      .ticket-layer,
+      .final-docs { display: none; }
+      .about-photo, .about-photo img { min-height: 330px; }
+      .manifesto { padding: 34px 24px; }
+      .benefit-grid { grid-template-columns: 1fr; gap: 0; }
+      .benefit:nth-child(n) { min-height: 240px; padding: 34px 28px 38px; border-right: 0; border-top: 1px solid rgba(202,224,255,.18); }
+      .benefit:first-child { border-top: 0; }
+      .benefit-icon { top: 30px; right: 28px; }
+      .comfort-photo { height: 360px; }
+      .launch-card { min-height: 680px; padding: 42px 24px; }
+      .launch-art { inset: 0; opacity: .38; }
+      .launch-card::before { background: linear-gradient(90deg, rgba(8,42,91,.98), rgba(11,60,130,.72)); }
+      .final-cta::before { left: 22%; opacity: .38; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-photo, .hero-photo img, .hero-ticket, .boarding-pass, .bag-tag { animation: none; transform: none; translate: none; rotate: none; }
+      .reveal.reveal-armed { opacity: 1; transform: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) and (min-width: 701px) {
+      .scroll-plane { display: grid; }
+    }
+
+    /* Unified full-width layout system — desktop-first refinement */
+    :root {
+      --layout-max: 1480px;
+      --layout-gutter: clamp(24px, 4vw, 72px);
+      --layout-width: min(calc(100vw - var(--layout-gutter) - var(--layout-gutter)), var(--layout-max));
+      --layout-edge: calc((100vw - var(--layout-width)) / 2);
+    }
+
+    .shell {
+      width: var(--layout-width);
+      max-width: none;
+    }
+
+    main > section {
+      width: 100%;
+      margin-inline: 0;
+    }
+
+    section { padding-block: clamp(96px, 8vw, 144px); }
+
+    .hero {
+      min-height: 0;
+      padding: clamp(92px, 7vw, 118px) 0 clamp(72px, 6vw, 104px);
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(390px, .78fr) minmax(620px, 1.22fr);
+      gap: clamp(18px, 2.4vw, 44px);
+      align-items: center;
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      padding-top: 12px;
+    }
+
+    .hero-visual {
+      width: calc(100% + var(--layout-edge));
+      min-height: 0;
+      aspect-ratio: 1608 / 978;
+      margin: 0 calc(-1 * var(--layout-edge)) 0 0;
+    }
+
+    .hero-photo {
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 100%);
+    }
+
+    .hero-photo img {
+      object-fit: contain;
+      object-position: right center;
+      animation-name: hero-cruise-wide;
+    }
+
+    .ticket-mount--hero-primary { left: 8%; bottom: 6%; }
+    .ticket-mount--hero-secondary { right: var(--layout-gutter); bottom: 2%; }
+    .flight-tag { right: var(--layout-gutter); top: 8%; }
+
+    #about { padding-top: clamp(72px, 5.5vw, 96px); }
+    .about-grid { column-gap: clamp(52px, 5vw, 88px); }
+    .about-photo,
+    .about-photo img { min-height: clamp(500px, 35vw, 600px); }
+
+    .routes-section .shell,
+    #comfort > .shell { width: var(--layout-width); }
+
+    .map-frame,
+    .comfort-photo,
+    .benefit-grid,
+    .manifesto { width: 100%; }
+
+    .launch-section {
+      padding-block: 0;
+      background: #082a5b;
+    }
+
+    .launch-card.shell {
+      width: 100%;
+      min-height: clamp(720px, 51vw, 900px);
+      max-width: none;
+      margin: 0;
+      padding-block: clamp(72px, 7vw, 118px);
+      padding-inline: var(--layout-edge);
+      border-radius: 0;
+    }
+
+    .launch-art { inset: 0 0 0 35%; }
+    .launch-content { width: min(690px, 48vw); }
+
+    .final-cta { min-height: clamp(660px, 48vw, 820px); }
+
+    @keyframes hero-cruise-wide {
+      0%, 100% { transform: translate3d(0, -4px, 0) rotate(-.18deg); }
+      50% { transform: translate3d(-3px, 6px, 0) rotate(.22deg); }
+    }
+
+    @media (max-width: 1180px) {
+      .hero-grid { grid-template-columns: minmax(360px, .84fr) minmax(500px, 1.16fr); }
+      .hero-visual { margin-right: calc(-1 * var(--layout-edge)); }
+      .ticket-mount--hero-primary { left: 3%; }
+      .ticket-mount--hero-secondary { right: 3%; }
+      .flight-tag { right: 4%; }
+      .launch-art { left: 30%; }
+      .launch-content { width: min(650px, 54vw); }
+    }
+
+    @media (max-width: 980px) {
+      .hero { min-height: 720px; }
+      .hero-grid { display: block; }
+      .hero-visual {
+        position: absolute;
+        inset: 92px -12% 0 30%;
+        width: auto;
+        min-height: 0;
+        aspect-ratio: auto;
+        margin: 0;
+        opacity: .58;
+      }
+      .hero-copy { max-width: 610px; padding-top: 34px; }
+      .hero-photo {
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 34%);
+        mask-image: linear-gradient(90deg, transparent, #000 34%);
+      }
+      .hero-photo img { object-fit: cover; object-position: 60% center; }
+      .ticket-layer, .flight-tag { display: none; }
+      .launch-art { left: 18%; }
+      .launch-content { width: min(650px, 78vw); }
+    }
+
+    @media (max-width: 700px) {
+      :root { --layout-gutter: 15px; }
+      section { padding-block: 82px; }
+      .hero { min-height: 760px; padding-top: 104px; }
+      .hero-visual { inset: 31% -62% 0 15%; opacity: .42; }
+      .hero-copy { padding-top: 0; }
+      .launch-card.shell {
+        min-height: 680px;
+        padding-block: 54px;
+        padding-inline: 24px;
+      }
+      .launch-art { inset: 0; }
+      .launch-content { width: 100%; }
+    }
+
+    /* Separate full-bleed photographs for the opening and closing screens */
+    .hero {
+      min-height: clamp(780px, 56.25vw, 1080px);
+      display: grid;
+      align-items: center;
+      padding: clamp(108px, 8vw, 154px) 0 clamp(76px, 6vw, 112px);
+      background: #eaf4ff;
+    }
+
+    .hero::before { display: none; }
+    .hero::after {
+      inset: 0;
+      z-index: 2;
+      height: auto;
+      background:
+        linear-gradient(90deg, rgba(244,250,253,.78) 0%, rgba(244,250,253,.7) 25%, rgba(244,250,253,.46) 40%, rgba(244,250,253,.12) 58%, transparent 72%),
+        linear-gradient(0deg, rgba(234,244,255,.14), transparent 24%);
+    }
+
+    .hero-background {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: block;
+      overflow: hidden;
+      transform: translate3d(0, var(--hero-shift), 0);
+      animation: hero-unveil 1.15s var(--ease-editorial) both;
+      will-change: transform;
+    }
+
+    .hero-background img {
+      width: calc(100% + 20px);
+      height: calc(100% + 20px);
+      margin: -10px;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      animation: hero-cloud-flight 12s cubic-bezier(.45, 0, .55, 1) infinite;
+      will-change: transform;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 3;
+      grid-template-columns: minmax(390px, 620px) 1fr;
+      gap: 0;
+      align-items: center;
+    }
+
+    .hero-copy { max-width: 590px; padding-top: 0; }
+    .hero-copy > p:not(.eyebrow) { max-width: 48ch; }
+    .hero-visual { display: none; }
+
+    .final-cta {
+      position: relative;
+      min-height: clamp(700px, 52vw, 940px);
+      color: var(--editorial-ink);
+      background: #eaf4ff;
+      isolation: isolate;
+    }
+
+    .final-cta::before {
+      inset: -4%;
+      z-index: 0;
+      opacity: 1;
+      background: url("assets/images/norravia-hero-panorama-v2.webp") 61% 52% / 112% auto no-repeat;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .final-cta::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(244,250,253,.97) 0%, rgba(244,250,253,.87) 29%, rgba(244,250,253,.42) 47%, transparent 67%);
+    }
+
+    .final-cta .shell { position: relative; z-index: 3; }
+
+    @keyframes panorama-cruise {
+      0%, 100% { transform: scale(1.025) translate3d(0, -3px, 0) rotate(-.12deg); }
+      50% { transform: scale(1.04) translate3d(-3px, 5px, 0) rotate(.16deg); }
+    }
+
+    @keyframes hero-cloud-flight {
+      0%, 100% { transform: translate3d(-2px, -2px, 0) rotate(-.04deg); }
+      25% { transform: translate3d(2px, -8px, 0) rotate(.08deg); }
+      50% { transform: translate3d(4px, -3px, 0) rotate(.15deg); }
+      75% { transform: translate3d(-1px, 4px, 0) rotate(-.08deg); }
+    }
+
+    @media (max-width: 980px) {
+      .hero { min-height: 760px; }
+      .hero-grid { display: grid; grid-template-columns: minmax(0, 610px) 1fr; }
+      .hero-copy { padding-top: 24px; }
+      .hero-background img { object-position: 62% center; }
+      .hero::after {
+        background: linear-gradient(90deg, rgba(244,250,253,.88) 0%, rgba(244,250,253,.74) 43%, rgba(244,250,253,.2) 72%, transparent);
+      }
+      .final-cta::before { background-position: 60% center; background-size: cover; }
+      .final-cta::after { background: linear-gradient(90deg, rgba(244,250,253,.97), rgba(244,250,253,.78) 52%, rgba(244,250,253,.22)); }
+    }
+
+    @media (max-width: 700px) {
+      .hero { min-height: 780px; padding-top: 104px; }
+      .hero-grid { display: block; }
+      .hero-background img { object-position: 72% center; }
+      .hero::after { background: linear-gradient(90deg, rgba(244,250,253,.94), rgba(244,250,253,.78) 72%, rgba(244,250,253,.3)); }
+      .final-cta::before { background-position: 64% center; }
+      .final-cta::after { background: linear-gradient(90deg, rgba(244,250,253,.98), rgba(244,250,253,.76)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-background,
+      .hero-background img { animation: none; transform: none; }
+    }
+
+    /* Alternating closing rhythm: airport image left, launch copy right */
+    .launch-card.shell {
+      min-height: clamp(740px, 50vw, 900px);
+      display: grid;
+      grid-template-columns: minmax(0, 52fr) minmax(96px, 10fr) minmax(480px, 38fr);
+      align-items: stretch;
+      padding: 0;
+      overflow: hidden;
+      background: #082a5b;
+    }
+
+    .launch-card::before { display: none; }
+
+    .launch-art {
+      position: relative;
+      inset: auto;
+      grid-column: 1 / 3;
+      grid-row: 1;
+      min-height: clamp(740px, 50vw, 900px);
+      opacity: 1;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .launch-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .launch-content {
+      grid-column: 2 / 4;
+      grid-row: 1;
+      width: auto;
+      max-width: none;
+      min-width: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(54px, 5vw, 86px) max(var(--layout-edge), clamp(42px, 5vw, 84px)) clamp(54px, 5vw, 86px) clamp(104px, 8vw, 154px);
+      background: linear-gradient(
+        90deg,
+        rgba(8,42,91,0) 0,
+        rgba(8,42,91,.46) 9%,
+        rgba(8,42,91,.9) 18%,
+        #082a5b 22%
+      );
+    }
+
+    .launch-content h2 { font-size: clamp(3.2rem, 4.55vw, 5rem); }
+    .launch-date { font-size: clamp(3.3rem, 5vw, 5.7rem); }
+    .launch-content .countdown {
+      width: 100%;
+      max-width: none;
+      grid-template-columns: minmax(0, 1.25fr) repeat(3, minmax(0, 1fr));
+      gap: clamp(16px, 1.3vw, 28px);
+    }
+    .launch-content .time-box {
+      min-width: 0;
+      padding: 20px 4px;
+    }
+    .launch-content .time-box strong {
+      font-size: clamp(2.55rem, 3.9vw, 4.65rem);
+      white-space: nowrap;
+    }
+
+    .final-cta h2 { max-width: 590px; font-size: clamp(3.25rem, 5vw, 5.25rem); }
+    .final-cta .lead { max-width: 44ch; }
+
+    @media (max-width: 1180px) {
+      .launch-card.shell { grid-template-columns: minmax(0, 46fr) minmax(86px, 12fr) minmax(430px, 42fr); }
+      .launch-content { padding: 56px 42px 56px 76px; }
+      .launch-content h2 { font-size: clamp(3rem, 4.6vw, 4.35rem); }
+      .launch-content .countdown {
+        grid-template-columns: minmax(0, 1.25fr) repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .launch-content .time-box strong { font-size: clamp(2.45rem, 4.25vw, 4.15rem); }
+    }
+
+    @media (max-width: 820px) {
+      .launch-card.shell {
+        min-height: 0;
+        grid-template-columns: 1fr;
+      }
+      .launch-art {
+        grid-column: 1;
+        grid-row: 1;
+        min-height: 390px;
+      }
+      .launch-content {
+        grid-column: 1;
+        grid-row: 2;
+        margin-top: -96px;
+        padding: 138px var(--layout-gutter) 66px;
+        background: linear-gradient(
+          180deg,
+          rgba(8,42,91,0) 0,
+          rgba(8,42,91,.78) 48px,
+          #082a5b 96px
+        );
+      }
+    }
+
+    @media (max-width: 700px) {
+      .launch-art { min-height: 320px; }
+      .launch-content { margin-top: -80px; padding: 116px 24px 56px; }
+      .launch-content h2 { font-size: clamp(2.8rem, 13vw, 4rem); }
+      .launch-content .countdown {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px 20px;
+      }
+      .launch-content .time-box strong { font-size: clamp(2.8rem, 13vw, 4.5rem); }
+      .final-cta h2 { max-width: 11ch; }
+      .final-cta .lead { max-width: 31ch; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
+
+  <header class="site-header" id="siteHeader">
+    <div class="shell nav">
+      <a class="brand" href="#top" aria-label="Norravia — на главную">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none"><path d="M4 20.7 28 7.2 18.7 23l-4.1-5.3L4 20.7Z" stroke="currentColor" stroke-width="1.4"/><path d="m14.6 17.7 3.6-8.3" stroke="currentColor" stroke-width="1.4"/></svg>
+        </span>
+        Norravia
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Открыть меню"><span></span></button>
+      <nav class="nav-links" id="navLinks" aria-label="Основная навигация">
+        <a href="#about">О компании</a>
+        <a href="#routes">Маршруты</a>
+        <a href="#comfort">На борту</a>
+        <a href="#launch">Запуск</a>
+        <a class="btn btn--small" href="#routes">Открыть карту</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="heroTitle">
+      <div class="hero-stars" aria-hidden="true"></div>
+      <picture class="hero-background" aria-hidden="true">
+        <source srcset="assets/images/norravia-hero-flight-v3.webp" type="image/webp">
+        <img src="assets/images/norravia-hero-flight-v3.png" width="1672" height="941" fetchpriority="high" decoding="async" alt="">
+      </picture>
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Новая авиакомпания Норвегии</p>
+          <h1 id="heroTitle">Norravia<span>Born in Norway · Made for the world</span></h1>
+          <p>Северное гостеприимство. Весь мир ближе. Мы создаём перелёты, где продуманный комфорт становится естественной частью путешествия.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#routes">Исследовать маршруты <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5"/></svg></a>
+            <a class="btn btn--ghost" href="#about">Узнать о Norravia</a>
+          </div>
+          <div class="launch-note"><span class="pulse" aria-hidden="true"></span> Первый вылет · 17 декабря 2026</div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="orbit"></div>
+          <svg class="hero-plane" viewBox="0 0 620 320">
+            <defs>
+              <linearGradient id="aircraftBody" x1="80" y1="117" x2="560" y2="206" gradientUnits="userSpaceOnUse"><stop stop-color="#98B7C2"/><stop offset=".19" stop-color="#EAF4F5"/><stop offset=".52" stop-color="#FFFFFF"/><stop offset=".78" stop-color="#D7E7EA"/><stop offset="1" stop-color="#8EACB7"/></linearGradient>
+              <linearGradient id="aircraftWing" x1="287" y1="45" x2="367" y2="271" gradientUnits="userSpaceOnUse"><stop stop-color="#F6FBFC"/><stop offset=".55" stop-color="#C9DDE1"/><stop offset="1" stop-color="#84A4B0"/></linearGradient>
+              <linearGradient id="aircraftEngine" x1="326" y1="96" x2="386" y2="125" gradientUnits="userSpaceOnUse"><stop stop-color="#EEF7F8"/><stop offset=".56" stop-color="#B9D0D5"/><stop offset="1" stop-color="#6C8C99"/></linearGradient>
+              <linearGradient id="cockpitGlass" x1="506" y1="143" x2="544" y2="176" gradientUnits="userSpaceOnUse"><stop stop-color="#234D62"/><stop offset="1" stop-color="#081D2C"/></linearGradient>
+            </defs>
+
+            <g opacity=".2" fill="#020B12" transform="translate(4 10)"><path d="M86 153c31-10 69-14 117-15l81-2 69-99c6-9 18-13 28-10l14 4-43 105 113 2c45 1 84 9 111 22-27 13-66 21-111 22l-113 2 43 105-14 4c-10 3-22-1-28-10l-69-99-81-2c-48-1-86-5-117-15l-24-7 24-7Z"/></g>
+
+            <g>
+              <path d="M258 145 345 38c7-9 19-13 30-10l20 6-47 112-90-1Z" fill="url(#aircraftWing)"/><path d="M258 175 345 282c7 9 19 13 30 10l20-6-47-112-90 1Z" fill="url(#aircraftWing)"/>
+              <path d="m347 40 30-10 18 5-8 20-40-15ZM347 280l30 10 18-5-8-20-40 15Z" fill="#72EAD0"/><path d="m279 143 78-91M279 177l78 91" fill="none" stroke="#7899A5" stroke-width="1.2" opacity=".55"/>
+            </g>
+
+            <g>
+              <path d="m116 148 58-59c5-5 13-7 20-5l13 4-34 62-57-2ZM116 172l58 59c5 5 13 7 20 5l13-4-34-62-57 2Z" fill="url(#aircraftWing)"/><path d="m165 94 29-9 13 4-9 17-33-12ZM165 226l29 9 13-4-9-17-33 12Z" fill="#72EAD0" opacity=".82"/>
+            </g>
+
+            <g>
+              <g transform="translate(0 -1)"><path d="M326 103c7-8 20-12 35-10 16 2 29 10 33 20-4 10-17 18-33 20-15 2-28-2-35-10v-20Z" fill="url(#aircraftEngine)" stroke="#7899A5" stroke-width="1.2"/><ellipse cx="381" cy="113" rx="8" ry="13" fill="#183747"/><ellipse cx="381" cy="113" rx="3.5" ry="7.5" fill="#72EAD0" opacity=".5"/><path d="M335 100c8-3 17-5 27-4" fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".55"/></g>
+              <g transform="translate(0 95)"><path d="M326 103c7-8 20-12 35-10 16 2 29 10 33 20-4 10-17 18-33 20-15 2-28-2-35-10v-20Z" fill="url(#aircraftEngine)" stroke="#7899A5" stroke-width="1.2"/><ellipse cx="381" cy="113" rx="8" ry="13" fill="#183747"/><ellipse cx="381" cy="113" rx="3.5" ry="7.5" fill="#72EAD0" opacity=".5"/><path d="M335 100c8-3 17-5 27-4" fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".55"/></g>
+            </g>
+
+            <g>
+              <path d="M78 153c32-10 77-14 135-15l253-2c43 0 80 8 108 24-28 16-65 24-108 24l-253-2c-58-1-103-5-135-15l-25-7 25-7Z" fill="url(#aircraftBody)" stroke="#A8C1C9" stroke-width="1.2"/>
+              <path d="M83 153c113-12 279-8 388-10 34-1 62 5 88 15" fill="none" stroke="#FFFFFF" stroke-width="3" opacity=".52"/><path d="M84 168c119 8 278 7 388 9 30 1 58-5 82-15" fill="none" stroke="#6D8E9A" stroke-width="1.2" opacity=".38"/>
+              <path d="M509 143c16 2 29 6 42 12l-10 5-30-6-8-8 6-3ZM509 177c16-2 29-6 42-12l-10-5-30 6-8 8 6 3Z" fill="url(#cockpitGlass)"/><path d="M517 146c9 2 17 4 25 8M517 174c9-2 17-4 25-8" fill="none" stroke="#79D8D0" stroke-width="1" opacity=".48"/>
+              <g fill="#17384A"><circle cx="244" cy="151" r="3"/><circle cx="263" cy="151" r="3"/><circle cx="282" cy="151" r="3"/><circle cx="301" cy="151" r="3"/><circle cx="320" cy="151" r="3"/><circle cx="339" cy="151" r="3"/><circle cx="358" cy="151" r="3"/><circle cx="397" cy="151" r="3"/><circle cx="416" cy="151" r="3"/><circle cx="435" cy="151" r="3"/><circle cx="454" cy="151" r="3"/><circle cx="473" cy="151" r="3"/><circle cx="244" cy="169" r="3"/><circle cx="263" cy="169" r="3"/><circle cx="282" cy="169" r="3"/><circle cx="301" cy="169" r="3"/><circle cx="320" cy="169" r="3"/><circle cx="339" cy="169" r="3"/><circle cx="358" cy="169" r="3"/><circle cx="397" cy="169" r="3"/><circle cx="416" cy="169" r="3"/><circle cx="435" cy="169" r="3"/><circle cx="454" cy="169" r="3"/><circle cx="473" cy="169" r="3"/></g>
+              <g fill="none" stroke="#6F909C" stroke-width="1.2" opacity=".75"><rect x="207" y="143" width="15" height="34" rx="5"/><rect x="481" y="143" width="14" height="34" rx="5"/><path d="M229 140v40M380 139v42"/></g>
+              <path d="M120 147h67v26h-67c-23-2-42-6-58-13 16-7 35-11 58-13Z" fill="#72EAD0" opacity=".82"/><path d="M92 154c24-6 52-8 83-9l-6 30c-32-1-58-4-77-9l-18-6 18-6Z" fill="#2DB7AE" opacity=".65"/>
+            </g>
+
+            <g>
+              <path d="M104 151 141 73c4-9 14-14 24-11l16 5-21 82-56 2Z" fill="#72EAD0"/><path d="m142 74 20-11 18 5-7 26-31-20Z" fill="#2DB7AE"/><path d="m121 143 39-63" fill="none" stroke="#E9FFFF" stroke-width="2" opacity=".44"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <span class="scroll-cue" aria-hidden="true"></span>
+    </section>
+
+    <section id="about" aria-labelledby="aboutTitle">
+      <div class="shell about-grid">
+        <div class="about-copy reveal">
+          <p class="eyebrow">Наш подход</p>
+          <h2 id="aboutTitle">Премиальность без дистанции.</h2>
+          <p class="lead">Norravia родилась в Осло с простой идеей: внимательный сервис и красивое путешествие должны быть доступны не только избранным.</p>
+        </div>
+        <figure class="about-photo reveal">
+          <picture>
+            <source srcset="assets/images/norravia-fjords-wing.webp" type="image/webp">
+            <img src="assets/images/norravia-fjords-wing.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Крыло самолёта над заснеженными норвежскими фьордами">
+          </picture>
+          <figcaption>Норвегия · вид с высоты</figcaption>
+        </figure>
+        <div class="manifesto reveal">
+          <blockquote>Мы не добавляем роскошь ради эффекта. Мы убираем всё лишнее, чтобы осталось <em>ощущение полёта</em>.</blockquote>
+          <p class="lead">От спокойного цифрового опыта до деталей салона — каждое решение создаётся вокруг человека. Честно, тепло и по-северному точно.</p>
+          <div class="stat-row" aria-label="Ключевые факты">
+            <div class="stat"><strong>12</strong><span>направлений</span></div>
+            <div class="stat"><strong>OSL</strong><span>главный хаб</span></div>
+            <div class="stat"><strong>2026</strong><span>первый вылет</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="routes-section" id="routes" aria-labelledby="routesTitle">
+      <div class="shell">
+        <div class="routes-head reveal">
+          <div><p class="eyebrow">Карта полётов</p><h2 id="routesTitle">Из Осло —<br>навстречу миру.</h2><p class="lead">Нажмите на светящуюся точку, чтобы открыть информацию о направлении. Повторное нажатие закроет карточки.</p></div>
+          <div class="route-counter"><strong>12</strong>международных маршрутов</div>
+        </div>
+
+        <div class="map-frame has-route-info reveal">
+          <svg class="world-map" viewBox="0 0 1000 520" role="img" aria-labelledby="mapTitle mapDesc">
+            <title id="mapTitle">Карта маршрутов Norravia из Осло</title>
+            <desc id="mapDesc">Интерактивная карта двенадцати будущих направлений из Осло в Европу, Америку, Азию и Саудовскую Аравию.</desc>
+            <image class="map-atlas" href="assets/images/norravia-premium-atlas.webp" x="0" y="0" width="1000" height="520" preserveAspectRatio="none" aria-hidden="true"/>
+            <defs>
+              <linearGradient id="routeGradient" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#355472"/><stop offset=".28" stop-color="#0b4fc4"/><stop offset="1" stop-color="#082a5b"/></linearGradient>
+              <filter id="routeGlow"><feGaussianBlur stdDeviation="5"/></filter>
+            </defs>
+            <g aria-hidden="true">
+              <path class="grid-line" d="M0 104h1000M0 208h1000M0 312h1000M0 416h1000M200 0v520M400 0v520M600 0v520M800 0v520"/>
+              <path class="land" d="M48 120 112 70l88 2 45 36 46 9 28 36-15 42-52 9-24 35-47 2-29 48-28-6-9-65-42-30-30-40 5-28Zm128 199 36 12 25 45-6 59-29 58-24-14-15-69 4-55 9-36Z"/>
+              <path class="land land-highlight" d="M393 124 439 87l64 12 18 34 57 14 23 35-28 30-41 10-7 34-38 4-25-30-38-5-20-43-35-18 4-40Zm99 151 48-16 48 25 29 69-18 76-46 65-27-27-20-75-32-67 18-50Z"/>
+              <path class="land" d="M575 122 639 91l92 12 59-18 93 40 55 54-20 54-74 12-47 30-66-17-50 25-57-41-51-10-20-52 22-58Zm255 229 52-10 46 30-11 52-66 5-38-36 17-41Z"/>
+              <path class="land land-highlight" d="M410 92 424 65l36-13 19 23-20 23-49-6Z"/>
+              <path class="land" d="M930 280 952 267l12 20-17 18-17-25Z"/>
+            </g>
+
+            <g aria-hidden="true">
+              <path class="route-glow" d="M517 148 Q403 88 279 194"/><path id="r-ny" class="route" d="M517 148 Q403 88 279 194"/>
+              <path class="route-glow" d="M517 148 Q503 158 486 185"/><path id="r-london" class="route" d="M517 148 Q503 158 486 185"/>
+              <path class="route-glow" d="M517 148 Q507 176 496 202"/><path id="r-paris" class="route" d="M517 148 Q507 176 496 202"/>
+              <path class="route-glow" d="M517 148 Q566 176 606 239"/><path id="r-riyadh" class="route" d="M517 148 Q566 176 606 239"/>
+              <path class="route-glow" d="M517 148 Q715 88 887 200"/><path id="r-tokyo" class="route" d="M517 148 Q715 88 887 200"/>
+              <path class="route-glow" d="M517 148 Q675 100 804 199"/><path id="r-beijing" class="route" d="M517 148 Q675 100 804 199"/>
+              <path id="r-helsinki" class="route" d="M517 148 Q526 137 534 145"/>
+              <path id="r-copenhagen" class="route" d="M517 148 Q510 160 512 172"/>
+              <path id="r-stockholm" class="route" d="M517 148 Q517 140 521 151"/>
+              <path id="r-reykjavik" class="route" d="M517 148 Q480 110 439 139"/>
+              <path id="r-amsterdam" class="route" d="M517 148 Q500 164 493 182"/>
+              <path id="r-berlin" class="route" d="M517 148 Q518 161 518 181"/>
+              <path class="moving-plane" d="m-5-2 10 2-10 2 2-2-2-2Z"><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#r-ny"/></animateMotion></path>
+              <path class="moving-plane" d="m-5-2 10 2-10 2 2-2-2-2Z"><animateMotion dur="9s" begin="-3s" repeatCount="indefinite" rotate="auto"><mpath href="#r-tokyo"/></animateMotion></path>
+              <path class="moving-plane" d="m-5-2 10 2-10 2 2-2-2-2Z"><animateMotion dur="6s" begin="-1s" repeatCount="indefinite" rotate="auto"><mpath href="#r-riyadh"/></animateMotion></path>
+            </g>
+
+            <g class="map-node hub active" tabindex="0" role="button" aria-label="Осло, Норвегия — главный хаб" data-city="Осло" data-country="Норвегия" data-status="Главный хаб Norravia" transform="translate(517 148)"><circle class="node-ring" r="12"/><circle class="node-core" r="3.5"/></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Лондон, Великобритания" data-city="Лондон" data-country="Великобритания" transform="translate(486 185)"><circle class="node-ring" r="7"/><circle class="node-core" r="2.4"/><text x="-43" y="17">Лондон</text></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Париж, Франция" data-city="Париж" data-country="Франция" transform="translate(496 202)"><circle class="node-ring" r="7"/><circle class="node-core" r="2.4"/><text x="10" y="18">Париж</text></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Нью-Йорк, США" data-city="Нью-Йорк" data-country="США" transform="translate(279 194)"><circle class="node-ring" r="7"/><circle class="node-core" r="2.4"/><text x="10" y="-9">Нью-Йорк</text></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Эр-Рияд, Саудовская Аравия" data-city="Эр-Рияд" data-country="Саудовская Аравия" transform="translate(606 239)"><circle class="node-ring" r="7"/><circle class="node-core" r="2.4"/><text x="10" y="17">Эр-Рияд</text></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Токио, Япония" data-city="Токио" data-country="Япония" transform="translate(887 200)"><circle class="node-ring" r="7"/><circle class="node-core" r="2.4"/><text x="-40" y="-10">Токио</text></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Пекин, Китай" data-city="Пекин" data-country="Китай" transform="translate(804 199)"><circle class="node-ring" r="7"/><circle class="node-core" r="2.4"/><text x="10" y="17">Пекин</text></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Хельсинки, Финляндия" data-city="Хельсинки" data-country="Финляндия" transform="translate(534 145)"><circle class="node-ring" r="6"/><circle class="node-core" r="2.2"/><text x="9" y="-20">Хельсинки</text></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Копенгаген, Дания" data-city="Копенгаген" data-country="Дания" transform="translate(512 172)"><circle class="node-ring" r="6"/><circle class="node-core" r="2.2"/></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Стокгольм, Швеция" data-city="Стокгольм" data-country="Швеция" transform="translate(521 151)"><circle class="node-ring" r="6"/><circle class="node-core" r="2.2"/></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Рейкьявик, Исландия" data-city="Рейкьявик" data-country="Исландия" transform="translate(439 139)"><circle class="node-ring" r="7"/><circle class="node-core" r="2.4"/><text x="-28" y="-13">Рейкьявик</text></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Амстердам, Нидерланды" data-city="Амстердам" data-country="Нидерланды" transform="translate(493 182)"><circle class="node-ring" r="6"/><circle class="node-core" r="2.2"/></g>
+            <g class="map-node" tabindex="0" role="button" aria-label="Берлин, Германия" data-city="Берлин" data-country="Германия" transform="translate(518 181)"><circle class="node-ring" r="6"/><circle class="node-core" r="2.2"/><text x="10" y="17">Берлин</text></g>
+          </svg>
+          <div class="country-info open" id="countryInfo" aria-live="polite" aria-hidden="false"><small>О стране</small><strong id="countryInfoName">Норвегия</strong><p id="countryInfoText">Страна фьордов, северного сияния и спокойного скандинавского ритма. Отсюда начинается история Norravia.</p></div>
+          <div class="route-info open" id="routeInfo" aria-live="polite" aria-hidden="false"><small id="routeStatus">Главный хаб Norravia</small><strong id="routeCity">Осло</strong><span id="routeCountry">Норвегия</span></div>
+        </div>
+        <div class="destination-strip" aria-label="Список направлений">
+          <button class="destination-chip active" type="button" data-city="Осло" aria-pressed="true">Норвегия · хаб</button><button class="destination-chip" type="button" data-city="Лондон" aria-pressed="false">Великобритания</button><button class="destination-chip" type="button" data-city="Париж" aria-pressed="false">Франция</button><button class="destination-chip" type="button" data-city="Нью-Йорк" aria-pressed="false">США</button><button class="destination-chip" type="button" data-city="Эр-Рияд" aria-pressed="false">Саудовская Аравия</button><button class="destination-chip" type="button" data-city="Токио" aria-pressed="false">Япония</button><button class="destination-chip" type="button" data-city="Пекин" aria-pressed="false">Китай</button><button class="destination-chip" type="button" data-city="Хельсинки" aria-pressed="false">Финляндия</button><button class="destination-chip" type="button" data-city="Копенгаген" aria-pressed="false">Дания</button><button class="destination-chip" type="button" data-city="Стокгольм" aria-pressed="false">Швеция</button><button class="destination-chip" type="button" data-city="Рейкьявик" aria-pressed="false">Исландия</button><button class="destination-chip" type="button" data-city="Амстердам" aria-pressed="false">Нидерланды</button><button class="destination-chip" type="button" data-city="Берлин" aria-pressed="false">Германия</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="comfort" aria-labelledby="comfortTitle">
+      <div class="shell">
+        <div class="comfort-intro reveal">
+          <div><p class="eyebrow">Norravia на борту</p><h2 id="comfortTitle">Комфорт, который не требует объяснений.</h2></div>
+          <p class="lead">Никакой показной роскоши — только простор, тишина и забота в тех деталях, которые действительно меняют полёт.</p>
+        </div>
+        <figure class="comfort-photo reveal">
+          <picture>
+            <source srcset="assets/images/norravia-cabin.webp" type="image/webp">
+            <img src="assets/images/norravia-cabin.png" width="1536" height="1024" loading="lazy" decoding="async" alt="Светлый салон Norravia с просторными тёмно-синими креслами">
+          </picture>
+        </figure>
+        <div class="benefit-grid">
+          <article class="benefit reveal" tabindex="0"><span class="benefit-number">01</span><span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M7 25V10a3 3 0 0 1 6 0v7h10a2 2 0 0 1 2 2v6M5 25h22M10 17h3" stroke="currentColor" stroke-width="1.4"/></svg></span><h3>Больше личного пространства</h3><p>Продуманная геометрия салона, удобные кресла и достаточно места, чтобы расслабиться даже в долгом путешествии.</p></article>
+          <article class="benefit reveal" tabindex="0"><span class="benefit-number">02</span><span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M6 19c5-1 8-5 10-12 2 7 5 11 10 12-5 1-8 3-10 7-2-4-5-6-10-7Z" stroke="currentColor" stroke-width="1.4"/></svg></span><h3>Северная забота</h3><p>Тёплый и ненавязчивый сервис, в котором внимание чувствуется без лишних слов.</p></article>
+          <article class="benefit reveal" tabindex="0"><span class="benefit-number">03</span><span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><rect x="7" y="5" width="18" height="22" rx="4" stroke="currentColor" stroke-width="1.4"/><path d="M11 10h10M11 15h7M11 20h10" stroke="currentColor" stroke-width="1.4"/></svg></span><h3>Честная стоимость</h3><p>Понятные условия и полезные опции без ощущения, что комфорт спрятан за мелким шрифтом.</p></article>
+          <article class="benefit reveal" tabindex="0"><span class="benefit-number">04</span><span class="benefit-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M7 20a13 13 0 0 1 18 0M11 24a7 7 0 0 1 10 0M15 28a1 1 0 1 1 2 0" stroke="currentColor" stroke-width="1.4"/><path d="M6 9h20" stroke="currentColor" stroke-width="1.4"/></svg></span><h3>Цифровой сервис</h3><p>Спокойный путь от выбора направления до посадки: быстро, понятно и без ненужных действий.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="launch-section" id="launch" aria-labelledby="launchTitle">
+      <div class="shell launch-card reveal">
+        <picture class="launch-art" aria-hidden="true">
+          <source srcset="assets/images/norravia-oslo-airport-blue-hour.webp" type="image/webp">
+          <img src="assets/images/norravia-oslo-airport-blue-hour.png" width="1672" height="941" loading="lazy" decoding="async" alt="">
+        </picture>
+        <div class="launch-content">
+          <p class="eyebrow">Скоро в небе</p>
+          <h2 id="launchTitle">Начало новой<br>северной истории.</h2>
+          <div class="launch-date"><span>17</span> декабря 2026</div>
+          <div class="countdown" id="countdown" aria-label="Обратный отсчёт до запуска">
+            <div class="time-box"><strong id="days">000</strong><span>дней</span></div>
+            <div class="time-box"><strong id="hours">00</strong><span>часов</span></div>
+            <div class="time-box"><strong id="minutes">00</strong><span>минут</span></div>
+            <div class="time-box"><strong id="seconds">00</strong><span>секунд</span></div>
+          </div>
+          <p class="launch-status" id="launchStatus">Первый вылет Norravia запланирован из нашего домашнего аэропорта в Осло.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" aria-labelledby="finalTitle">
+      <div class="shell reveal">
+        <p class="eyebrow">Первый билет Norravia</p>
+        <h2 id="finalTitle">Ваше путешествие<br>начинается в Осло.</h2>
+        <p class="lead">Первый рейс Осло — Лондон состоится 17 декабря 2026 года.</p>
+        <a class="btn" href="#routes">Посмотреть маршруты <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h13M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5"/></svg></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row">
+      <div><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M4 20.7 28 7.2 18.7 23l-4.1-5.3L4 20.7Z" stroke="currentColor" stroke-width="1.4"/><path d="m14.6 17.7 3.6-8.3" stroke="currentColor" stroke-width="1.4"/></svg></span>Norravia</a><p class="footer-copy">Презентационный сайт новой норвежской авиакомпании. Маршруты и детали сервиса могут уточняться к моменту запуска.</p></div>
+      <div class="footer-meta">Осло · Норвегия<br>Первый вылет · 17.12.2026<br>© <span id="year">2026</span> Norravia</div>
+    </div>
+  </footer>
+
+  <template id="boardingPassTemplate">
+    <article class="boarding-pass">
+      <div class="bp-main">
+        <div class="bp-header"><span class="bp-brand">Norravia</span><span class="bp-document">Boarding pass · Premium</span></div>
+        <div class="bp-route">
+          <div class="bp-airport"><small>From</small><strong>OSL</strong><span>Oslo · Gardermoen</span></div>
+          <div class="bp-route-line" aria-hidden="true"></div>
+          <div class="bp-airport"><small>To</small><strong>LHR</strong><span>London · Heathrow</span></div>
+        </div>
+        <div class="bp-fields">
+          <div class="bp-field bp-field--passenger"><small>Passenger</small><strong>SOLBERG / EMILIE</strong></div>
+          <div class="bp-field"><small>Flight</small><strong>NV 017</strong></div>
+          <div class="bp-field"><small>Date</small><strong>17 DEC 2026</strong></div>
+          <div class="bp-field"><small>Boarding</small><strong>08:15</strong></div>
+          <div class="bp-field"><small>Gate / Seat</small><strong>C12 · 12A</strong></div>
+        </div>
+        <div class="bp-bottom">
+          <div>
+            <svg class="bp-barcode" viewBox="0 0 196 34" aria-hidden="true"><g fill="currentColor"><rect x="0" width="3" height="34"/><rect x="6" width="1" height="34"/><rect x="10" width="4" height="34"/><rect x="18" width="2" height="34"/><rect x="24" width="5" height="34"/><rect x="33" width="2" height="34"/><rect x="39" width="1" height="34"/><rect x="43" width="6" height="34"/><rect x="53" width="2" height="34"/><rect x="60" width="4" height="34"/><rect x="68" width="1" height="34"/><rect x="73" width="3" height="34"/><rect x="80" width="6" height="34"/><rect x="90" width="2" height="34"/><rect x="96" width="5" height="34"/><rect x="105" width="1" height="34"/><rect x="110" width="4" height="34"/><rect x="118" width="2" height="34"/><rect x="125" width="6" height="34"/><rect x="135" width="1" height="34"/><rect x="140" width="3" height="34"/><rect x="147" width="5" height="34"/><rect x="156" width="2" height="34"/><rect x="162" width="1" height="34"/><rect x="167" width="6" height="34"/><rect x="177" width="3" height="34"/><rect x="184" width="1" height="34"/><rect x="189" width="5" height="34"/></g></svg>
+            <div class="bp-code-caption">NV017 · 171226 · OSL LHR · 12A</div>
+          </div>
+          <div class="bp-concept">Zone 2 · Sequence 017<br>Concept · not valid for travel</div>
+        </div>
+      </div>
+      <div class="bp-stub">
+        <div class="bp-stub-header"><span class="bp-brand">Norravia</span><span class="bp-document">Stub</span></div>
+        <div class="bp-stub-route"><strong>OSL</strong><span>→</span><strong>LHR</strong></div>
+        <div class="bp-stub-row"><div class="bp-stub-field"><small>Passenger</small><strong>SOLBERG / EMILIE</strong></div></div>
+        <div class="bp-stub-row"><div class="bp-stub-field"><small>Flight / Date</small><strong>NV 017 · 17 DEC</strong></div><div class="bp-stub-field"><small>Seat</small><strong>12A</strong></div></div>
+        <div class="bp-stub-row"><div class="bp-stub-field"><small>Boarding</small><strong>08:15</strong></div><div class="bp-stub-field"><small>Gate</small><strong>C12</strong></div></div>
+        <div class="bp-stub-foot">
+          <svg class="bp-qr" viewBox="0 0 29 29" aria-hidden="true"><g fill="currentColor"><path d="M1 1h8v8H1zm2 2v4h4V3zm17-2h8v8h-8zm2 2v4h4V3zM1 20h8v8H1zm2 2v4h4v-4z" fill-rule="evenodd"/><rect x="12" y="2" width="2" height="2"/><rect x="15" y="2" width="3" height="2"/><rect x="11" y="6" width="3" height="3"/><rect x="15" y="6" width="2" height="2"/><rect x="12" y="11" width="3" height="2"/><rect x="17" y="10" width="3" height="3"/><rect x="22" y="11" width="2" height="2"/><rect x="26" y="11" width="2" height="4"/><rect x="2" y="12" width="4" height="2"/><rect x="7" y="11" width="2" height="3"/><rect x="11" y="15" width="2" height="4"/><rect x="15" y="15" width="4" height="2"/><rect x="21" y="16" width="3" height="3"/><rect x="25" y="18" width="3" height="2"/><rect x="11" y="21" width="3" height="2"/><rect x="15" y="20" width="2" height="4"/><rect x="19" y="22" width="3" height="2"/><rect x="23" y="24" width="5" height="4"/><rect x="11" y="26" width="4" height="2"/><rect x="17" y="26" width="3" height="2"/></g></svg>
+          <span>Concept only<br>Zone 2</span>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <template id="bagTagTemplate">
+    <article class="bag-tag">
+      <div class="bag-brand">Norravia · Bag tag</div>
+      <div class="bag-route"><strong>OSL</strong><span>↓ NV 017 ↓</span><strong>LHR</strong></div>
+      <div class="bag-data"><div><span class="bag-label">Passenger</span><strong>SOLBERG</strong></div><div><span class="bag-label">Date</span><strong>17 DEC 26</strong></div><div><span class="bag-label">Class</span><strong>PREMIUM</strong></div><div><span class="bag-label">Sequence</span><strong>017</strong></div></div>
+      <svg class="bag-barcode" viewBox="0 0 126 42" aria-hidden="true"><g fill="currentColor"><rect x="0" width="2" height="42"/><rect x="5" width="4" height="42"/><rect x="12" width="1" height="42"/><rect x="17" width="5" height="42"/><rect x="26" width="2" height="42"/><rect x="32" width="4" height="42"/><rect x="39" width="1" height="42"/><rect x="44" width="6" height="42"/><rect x="54" width="2" height="42"/><rect x="60" width="5" height="42"/><rect x="69" width="1" height="42"/><rect x="74" width="4" height="42"/><rect x="82" width="2" height="42"/><rect x="88" width="6" height="42"/><rect x="98" width="1" height="42"/><rect x="103" width="4" height="42"/><rect x="111" width="2" height="42"/><rect x="117" width="6" height="42"/><rect x="125" width="1" height="42"/></g></svg>
+      <div class="bag-number">0234 000 172</div>
+      <div class="bag-concept">Concept · not valid for travel</div>
+    </article>
+  </template>
+
+  <button class="scroll-plane" id="scrollPlane" type="button" aria-label="Плавно вернуться к началу страницы" aria-hidden="true" tabindex="-1">
+    <svg viewBox="0 0 42 42" fill="none"><path d="m5 24 32-13-11 18-6-7-15 2Z" fill="currentColor"/><path d="m20 22 5-13" stroke="#76b8ff" stroke-width="1.4"/></svg>
+  </button>
+
+  <script>
+    (() => {
+      const boardingPassTemplate = document.getElementById('boardingPassTemplate');
+      const bagTagTemplate = document.getElementById('bagTagTemplate');
+      document.querySelectorAll('[data-boarding-pass]').forEach(mount => mount.append(boardingPassTemplate.content.cloneNode(true)));
+      document.querySelectorAll('[data-bag-tag]').forEach(mount => mount.append(bagTagTemplate.content.cloneNode(true)));
+
+      const header = document.getElementById('siteHeader');
+      const menuToggle = document.getElementById('menuToggle');
+      const navLinks = document.getElementById('navLinks');
+      const scrollPlane = document.getElementById('scrollPlane');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let previousY = window.scrollY;
+      let ticking = false;
+      let previousScrollTime = performance.now();
+      let lastPlaneInput = performance.now();
+      let targetPlaneTilt = 0;
+      let currentPlaneTilt = 0;
+      let targetPlaneOffset = 0;
+      let currentPlaneOffset = 0;
+      let targetTrail = 0;
+      let currentTrail = 0;
+      let returnFlightFrame = 0;
+      let returnFlightActive = false;
+
+      const closeMenu = () => {
+        menuToggle.classList.remove('open');
+        navLinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Открыть меню');
+      };
+
+      menuToggle.addEventListener('click', () => {
+        const isOpen = !navLinks.classList.contains('open');
+        menuToggle.classList.toggle('open', isOpen);
+        navLinks.classList.toggle('open', isOpen);
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        menuToggle.setAttribute('aria-label', isOpen ? 'Закрыть меню' : 'Открыть меню');
+      });
+
+      navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+
+      const updateScrollEffects = () => {
+        const y = window.scrollY;
+        const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+        const progress = Math.min(y / max, 1);
+        const now = performance.now();
+        const delta = y - previousY;
+        const elapsed = Math.max(now - previousScrollTime, 16);
+        const direction = Math.sign(delta);
+        const intensity = Math.min(Math.abs(delta) / elapsed * 1.7, 1);
+        header.classList.toggle('scrolled', y > 30);
+
+        if (!reduceMotion) {
+          const heroProgress = Math.min(y / Math.max(window.innerHeight, 1), 1);
+          document.documentElement.style.setProperty('--hero-shift', `${(heroProgress * 26).toFixed(2)}px`);
+          document.documentElement.style.setProperty('--hero-ticket-shift', `${(heroProgress * -34).toFixed(2)}px`);
+        }
+
+        const planeShouldBeVisible = y > window.innerHeight * .45;
+        scrollPlane.classList.toggle('visible', planeShouldBeVisible);
+        scrollPlane.tabIndex = planeShouldBeVisible ? 0 : -1;
+        scrollPlane.setAttribute('aria-hidden', String(!planeShouldBeVisible));
+
+        if (!reduceMotion) {
+          if (direction !== 0) {
+            const safeRange = Math.min(window.innerHeight * .22, 145);
+            targetPlaneTilt = direction * (9 + intensity * 19);
+            targetPlaneOffset = Math.max(-safeRange, Math.min(safeRange, targetPlaneOffset + delta * .24));
+            targetTrail = .35 + intensity * .65;
+            lastPlaneInput = now;
+            scrollPlane.classList.add('moving');
+          }
+        }
+
+        previousY = y;
+        previousScrollTime = now;
+        ticking = false;
+      };
+
+      const animateScrollPlane = now => {
+        if (!reduceMotion) {
+          const idleFor = now - lastPlaneInput;
+          if (idleFor > 110) {
+            targetPlaneTilt *= .86;
+            targetPlaneOffset *= .975;
+            targetTrail *= .82;
+            if (Math.abs(targetPlaneTilt) < .05) targetPlaneTilt = 0;
+            if (Math.abs(targetPlaneOffset) < .05) targetPlaneOffset = 0;
+            if (targetTrail < .01) {
+              targetTrail = 0;
+              scrollPlane.classList.remove('moving');
+            }
+          }
+
+          currentPlaneTilt += (targetPlaneTilt - currentPlaneTilt) * .14;
+          currentPlaneOffset += (targetPlaneOffset - currentPlaneOffset) * .1;
+          currentTrail += (targetTrail - currentTrail) * .16;
+
+          scrollPlane.style.transform = `translate3d(0, ${currentPlaneOffset.toFixed(2)}px, 0) rotate(${currentPlaneTilt.toFixed(2)}deg)`;
+          scrollPlane.style.setProperty('--trail-opacity', currentTrail.toFixed(3));
+          scrollPlane.style.setProperty('--trail-scale', (.18 + currentTrail * .82).toFixed(3));
+        }
+        window.requestAnimationFrame(animateScrollPlane);
+      };
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(updateScrollEffects);
+          ticking = true;
+        }
+      }, { passive: true });
+      updateScrollEffects();
+      window.requestAnimationFrame(animateScrollPlane);
+
+      const cancelReturnFlight = () => {
+        if (!returnFlightActive) return;
+        window.cancelAnimationFrame(returnFlightFrame);
+        returnFlightFrame = 0;
+        returnFlightActive = false;
+      };
+
+      const startReturnFlight = () => {
+        if (returnFlightActive || window.scrollY <= 1) return;
+
+        if (reduceMotion) {
+          window.scrollTo(0, 0);
+          scrollPlane.blur();
+          return;
+        }
+
+        const startY = window.scrollY;
+        const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+        const duration = Math.min(2200, Math.max(900, 900 + (startY / maxScroll) * 1300));
+        const startTime = performance.now();
+        returnFlightActive = true;
+        targetPlaneTilt = -28;
+        targetTrail = 1;
+        lastPlaneInput = startTime;
+        scrollPlane.classList.add('moving');
+
+        const flyUp = now => {
+          if (!returnFlightActive) return;
+          const elapsed = Math.min((now - startTime) / duration, 1);
+          const eased = elapsed < .5
+            ? 4 * elapsed * elapsed * elapsed
+            : 1 - Math.pow(-2 * elapsed + 2, 3) / 2;
+          window.scrollTo(0, Math.round(startY * (1 - eased)));
+
+          if (elapsed < 1) {
+            returnFlightFrame = window.requestAnimationFrame(flyUp);
+          } else {
+            returnFlightFrame = 0;
+            returnFlightActive = false;
+            scrollPlane.blur();
+          }
+        };
+
+        returnFlightFrame = window.requestAnimationFrame(flyUp);
+      };
+
+      scrollPlane.addEventListener('click', startReturnFlight);
+      window.addEventListener('wheel', cancelReturnFlight, { passive: true });
+      window.addEventListener('touchstart', cancelReturnFlight, { passive: true });
+      document.addEventListener('keydown', event => {
+        if (event.target === scrollPlane) return;
+        if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) cancelReturnFlight();
+      });
+
+      const routeCity = document.getElementById('routeCity');
+      const routeCountry = document.getElementById('routeCountry');
+      const routeStatus = document.getElementById('routeStatus');
+      const routeInfo = document.getElementById('routeInfo');
+      const countryInfo = document.getElementById('countryInfo');
+      const countryInfoName = document.getElementById('countryInfoName');
+      const countryInfoText = document.getElementById('countryInfoText');
+      const mapFrame = document.querySelector('.map-frame');
+      const mapNodes = [...document.querySelectorAll('.map-node')];
+      const destinationChips = [...document.querySelectorAll('.destination-chip')];
+      let activeRouteNode = null;
+
+      const countryDescriptions = {
+        'Норвегия': 'Страна фьордов, северного сияния и спокойного скандинавского ритма. Отсюда начинается история Norravia.',
+        'Великобритания': 'Островная страна с богатой историей, современной культурой и Лондоном — одним из главных городов мира.',
+        'Франция': 'Страна искусства, архитектуры и гастрономии, где каждое путешествие легко превращается в красивую историю.',
+        'США': 'Страна огромных расстояний и ярких контрастов. Нью-Йорк встречает путешественников энергией, культурой и узнаваемым горизонтом.',
+        'Саудовская Аравия': 'Страна древних традиций, пустынных пейзажей и быстро растущих современных городов.',
+        'Япония': 'Островная страна, где многовековые традиции естественно соседствуют с технологиями и ритмом мегаполисов.',
+        'Китай': 'Страна великой истории, разнообразной природы и динамичных городов, соединяющих прошлое и будущее.',
+        'Финляндия': 'Северная страна озёр, лесов и лаконичного дизайна, близкая Норвегии по духу и отношению к природе.',
+        'Дания': 'Скандинавская страна уютных городов, современной архитектуры и особого умения ценить простые моменты.',
+        'Швеция': 'Северная страна архипелагов, продуманного дизайна и городов, где природа всегда остаётся рядом.',
+        'Исландия': 'Остров льда и огня с вулканами, водопадами, ледниками и пейзажами, которые невозможно спутать с другими.',
+        'Нидерланды': 'Страна каналов, открытых горизонтов и смелой архитектуры, где исторические города живут в современном ритме.',
+        'Германия': 'Страна культурных столиц, сильных традиций и современной городской жизни в самом центре Европы.'
+      };
+
+      const toggleRoute = node => {
+        if (activeRouteNode === node) {
+          return;
+        }
+
+        mapNodes.forEach(item => item.classList.remove('active'));
+        node.classList.add('active');
+        routeCity.textContent = node.dataset.city;
+        routeCountry.textContent = node.dataset.country;
+        routeStatus.textContent = node.dataset.status || 'Открытие направления · скоро';
+        countryInfoName.textContent = node.dataset.country;
+        countryInfoText.textContent = countryDescriptions[node.dataset.country] || 'Новое направление Norravia, которое сделает мир ближе к Осло.';
+        destinationChips.forEach(chip => {
+          const isActive = chip.dataset.city === node.dataset.city;
+          chip.classList.toggle('active', isActive);
+          chip.setAttribute('aria-pressed', String(isActive));
+        });
+        routeInfo.classList.add('open');
+        countryInfo.classList.add('open');
+        routeInfo.setAttribute('aria-hidden', 'false');
+        countryInfo.setAttribute('aria-hidden', 'false');
+        mapFrame.classList.add('has-route-info');
+        countryInfo.classList.remove('refresh');
+        void countryInfo.offsetWidth;
+        countryInfo.classList.add('refresh');
+        activeRouteNode = node;
+      };
+
+      mapNodes.forEach(node => {
+        node.addEventListener('click', () => toggleRoute(node));
+        node.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleRoute(node);
+          }
+        });
+      });
+
+      destinationChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const node = mapNodes.find(item => item.dataset.city === chip.dataset.city);
+          if (node) toggleRoute(node);
+        });
+      });
+
+      const defaultRouteNode = mapNodes.find(node => node.dataset.city === 'Осло');
+      if (defaultRouteNode) toggleRoute(defaultRouteNode);
+
+      const revealElements = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && !reduceMotion) {
+        revealElements.forEach(element => element.classList.add('reveal-armed'));
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .12 });
+        revealElements.forEach(element => observer.observe(element));
+      } else {
+        revealElements.forEach(element => element.classList.add('in-view'));
+      }
+
+      const target = new Date('2026-12-17T09:00:00+01:00').getTime();
+      const units = {
+        days: document.getElementById('days'),
+        hours: document.getElementById('hours'),
+        minutes: document.getElementById('minutes'),
+        seconds: document.getElementById('seconds')
+      };
+
+      const updateCountdown = () => {
+        const distance = target - Date.now();
+        if (distance <= 0) {
+          units.days.textContent = '000';
+          units.hours.textContent = '00';
+          units.minutes.textContent = '00';
+          units.seconds.textContent = '00';
+          document.getElementById('launchStatus').textContent = 'Norravia уже в небе. Добро пожаловать на борт.';
+          return false;
+        }
+        units.days.textContent = String(Math.floor(distance / 86400000)).padStart(3, '0');
+        units.hours.textContent = String(Math.floor(distance / 3600000) % 24).padStart(2, '0');
+        units.minutes.textContent = String(Math.floor(distance / 60000) % 60).padStart(2, '0');
+        units.seconds.textContent = String(Math.floor(distance / 1000) % 60).padStart(2, '0');
+        return true;
+      };
+
+      updateCountdown();
+      const countdownTimer = window.setInterval(() => {
+        if (!updateCountdown()) window.clearInterval(countdownTimer);
+      }, 1000);
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
