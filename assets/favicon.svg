@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-labelledby="title">
+  <title id="title">Norravia</title>
+  <circle cx="16" cy="16" r="15" fill="#06111f"/>
+  <path d="M5.2 19.7 27 8.2l-8 15.2-4.1-4.8-9.7 1.1Z" fill="#1769ff"/>
+  <path d="m14.9 18.6 4-9.1" fill="none" stroke="#dffaff" stroke-width="1.35" stroke-linecap="round"/>
+</svg>
