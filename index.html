@@ -2915,30 +2915,37 @@
       background: #f6faff;
     }
 
-    /* В исходном файле две сцены склеены встык ровно на середине: сверху самолёт,
-       снизу облака. Раньше картинка растягивалась сразу на оба экрана, а стык
-       замазывался размытой полосой — но её положение считалось от высоты блока,
-       а положение стыка от ширины окна, поэтому совпадали они лишь при одной
-       пропорции окна.
-       Теперь каждый экран показывает свою сцену. Слой вдвое выше экрана и
-       заполняется по правилу cover, а значит середина изображения — то есть стык —
-       всегда приходится ровно на границу между экранами и не видна. */
+    /* У каждого экрана свой фон. Первый экран получил отдельный кадр, поэтому
+       заполняет свою высоту целиком.
+       Второй пока берёт нижнюю сцену старого общего файла: в том файле две сцены
+       склеены встык ровно на середине, поэтому слой делается вдвое выше экрана и
+       прижимается низом — при заполнении по правилу cover середина изображения,
+       то есть стык, уходит точно на верхнюю границу экрана и не видна. */
     .white-hero::after,
     .white-approach::after {
       content: "";
       position: absolute;
       left: 0;
       right: 0;
-      height: 200%;
       z-index: -2;
       pointer-events: none;
-      background-image: url("assets/images/norravia-white-shared-background.webp");
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
     }
-    .white-hero::after { top: 0; }
-    .white-approach::after { bottom: 0; }
+    .white-hero::after {
+      top: 0;
+      height: 100%;
+      background-image: url("assets/images/norravia-white-hero-v2.jpg");
+      /* Низ кадра уводится в фон страницы, чтобы переход ко второму экрану был мягким. */
+      mask-image: linear-gradient(180deg, #000 78%, rgba(0,0,0,.35) 93%, transparent 100%);
+      -webkit-mask-image: linear-gradient(180deg, #000 78%, rgba(0,0,0,.35) 93%, transparent 100%);
+    }
+    .white-approach::after {
+      bottom: 0;
+      height: 200%;
+      background-image: url("assets/images/norravia-white-shared-background.webp");
+    }
 
     .white-hero .white-shell { padding-top: clamp(168px, 17vh, 214px); }
 
@@ -3367,11 +3374,11 @@
         content: "";
         position: absolute;
         inset: 0 0 auto;
-        aspect-ratio: 3712 / 2350;
+        aspect-ratio: 1600 / 893;
         pointer-events: none;
         background-image:
-          linear-gradient(180deg, rgba(246,250,255,0) 52%, rgba(246,250,255,.86) 84%, #f6faff 100%),
-          url("assets/images/norravia-white-shared-background.webp");
+          linear-gradient(180deg, rgba(246,250,255,0) 58%, rgba(246,250,255,.86) 86%, #f6faff 100%),
+          url("assets/images/norravia-white-hero-v2.jpg");
         background-repeat: no-repeat;
         background-position: center top;
         background-size: 100% 100%, 100% auto;
@@ -3747,12 +3754,8 @@
             </div>
           </div>
 
-          <p class="white-route-code" aria-hidden="true">OSL — CPH — HEL — ARN</p>
-          <svg class="white-flight-arc" viewBox="0 0 980 260" aria-hidden="true">
-            <path d="M24 238C245 4 610-30 954 170"/>
-            <circle cx="238" cy="99" r="5"/><circle cx="493" cy="45" r="5"/><circle class="accent" cx="633" cy="61" r="4"/>
-          </svg>
-          <div class="white-flight-data" aria-hidden="true"><span>NRV 126</span><span>A350–1000</span><span>10 668 M</span><span>854 KM/H</span></div>
+          <!-- Маршрутная строка, дуга, координаты и блок данных рейса теперь впечатаны
+               в саму фотографию первого экрана, поэтому HTML-дубли удалены. -->
         </div>
       </section>
 
