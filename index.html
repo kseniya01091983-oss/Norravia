@@ -2945,6 +2945,10 @@
       bottom: 0;
       height: 200%;
       background-image: url("assets/images/norravia-white-shared-background.webp");
+      /* Слой вдвое выше экрана, поэтому 10% маски здесь — это нижние 20% самого
+         экрана: облака успевают раствориться до начала карты. */
+      mask-image: linear-gradient(180deg, #000 90%, rgba(0,0,0,.4) 96%, transparent 100%);
+      -webkit-mask-image: linear-gradient(180deg, #000 90%, rgba(0,0,0,.4) 96%, transparent 100%);
     }
 
     .white-hero .white-shell { padding-top: clamp(168px, 17vh, 214px); }
@@ -3180,16 +3184,17 @@
       background:
         radial-gradient(circle at 76% 38%, rgba(130,196,255,.13), transparent 30%),
         linear-gradient(180deg, #f7fbff 0%, #eff7fd 56%, #f8fbfe 100%);
-      border-top: 1px solid rgba(65,103,132,.08);
     }
+    /* Экран карты подхватывает тон облаков сверху и растворяет его, чтобы переход
+       со второго экрана не читался линией. */
     .white-map-panel::before {
       content: "";
       position: absolute;
       inset: 0;
       pointer-events: none;
-      background: linear-gradient(180deg, rgba(246,250,254,.9), transparent 16%);
+      background: linear-gradient(180deg, rgba(233,242,251,.95), rgba(243,248,253,.5) 9%, transparent 22%);
     }
-    .white-map-panel .white-shell { padding-top: clamp(168px, 17vh, 208px); }
+    .white-map-panel .white-shell { padding-top: clamp(88px, 9vh, 120px); }
 
     .white-map-copy {
       position: relative;
@@ -3216,6 +3221,16 @@
       position: absolute;
       z-index: 1;
       inset: 112px -70px 90px 390px;
+      /* Карта холоднее и плотнее фотографий, поэтому её края растворяются, а не
+         обрываются: снизу и слева она уходит в фон экрана. */
+      mask-image:
+        linear-gradient(180deg, #000 68%, rgba(0,0,0,.45) 88%, transparent 100%),
+        linear-gradient(90deg, transparent 0%, rgba(0,0,0,.5) 6%, #000 16%);
+      -webkit-mask-image:
+        linear-gradient(180deg, #000 68%, rgba(0,0,0,.45) 88%, transparent 100%),
+        linear-gradient(90deg, transparent 0%, rgba(0,0,0,.5) 6%, #000 16%);
+      mask-composite: intersect;
+      -webkit-mask-composite: source-in;
     }
     .white-map-art svg { display: block; width: 100%; height: 100%; overflow: visible; }
     .white-coast {
