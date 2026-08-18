@@ -3126,9 +3126,16 @@
     .white-approach .white-shell {
       display: flex;
       flex-direction: column;
-      gap: clamp(40px, 6vh, 88px);
-      padding-top: clamp(72px, 9vh, 108px);
-      padding-bottom: clamp(40px, 5vh, 72px);
+      /* Три просвета — сверху до текста, от текста до окружностей и от окружностей
+         до низа — должны быть равны. Сложность в том, что у SVG есть собственный
+         пустой запас над и под окружностями, и он растёт с шириной кругов, а не с
+         высотой экрана. Поэтому отступы уменьшаются ровно на величину этого
+         запаса: 6% ширины сверху и 5,33% снизу. */
+      --stage-w: min(1500px, 88vw);
+      --gap-target: clamp(96px, 13vh, 150px);
+      gap: max(24px, calc(var(--gap-target) - var(--stage-w) * .06));
+      padding-top: var(--gap-target);
+      padding-bottom: max(28px, calc(var(--gap-target) - var(--stage-w) * .0533));
     }
     .white-approach::before {
       content: "";
@@ -3145,7 +3152,7 @@
     }
     .white-approach-text {
       max-width: 690px;
-      margin: 68px auto 0;
+      margin: 0 auto;
       color: #32495b;
       font-size: 1.08rem;
       line-height: 1.75;
