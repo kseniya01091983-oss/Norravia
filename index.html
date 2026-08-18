@@ -2903,6 +2903,9 @@
       position: relative;
       height: 100vh;
       min-height: 760px;
+      /* Общее правило для section задаёт вертикальные отступы до 144px. Экраны White
+         управляют своими отступами через .white-shell, иначе они складываются. */
+      padding-block: 0;
       overflow: hidden;
     }
 
@@ -3091,7 +3094,17 @@
       text-transform: uppercase;
     }
 
-    .white-approach .white-shell { padding-top: clamp(72px, 9vh, 108px); }
+    /* Текст и круги лежат в одном потоке: круги прижаты к низу автоматическим отступом,
+       а не абсолютным позиционированием, поэтому они не могут наехать на текст.
+       Экран растёт по содержимому, иначе на низком окне круги обрезались бы снизу. */
+    .white-approach { height: auto; min-height: max(760px, 100vh); }
+    .white-approach .white-shell {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(40px, 6vh, 88px);
+      padding-top: clamp(72px, 9vh, 108px);
+      padding-bottom: clamp(40px, 5vh, 72px);
+    }
     .white-approach::before {
       content: "";
       position: absolute;
@@ -3120,14 +3133,11 @@
     }
 
     .white-ring-stage {
-      position: absolute;
-      left: 50%;
-      bottom: clamp(40px, 5vh, 72px);
       width: min(1500px, 88vw);
-      transform: translateX(-50%);
+      margin: auto auto 0;
     }
-    .white-ring-stage.reveal.reveal-armed { transform: translateX(-50%) translateY(22px); }
-    .white-ring-stage.reveal.reveal-armed.in-view { transform: translateX(-50%) translateY(0); }
+    .white-ring-stage.reveal.reveal-armed { transform: translateY(22px); }
+    .white-ring-stage.reveal.reveal-armed.in-view { transform: translateY(0); }
     .white-ring-stage svg { display: block; width: 100%; height: auto; overflow: visible; }
     .white-ring {
       --ring-offset: 0px;
@@ -3377,18 +3387,11 @@
       .white-flight-arc,
       .white-flight-data { display: none; }
 
-      .white-approach .white-shell { padding-top: 72px; padding-bottom: 72px; }
+      .white-approach .white-shell { padding-top: 72px; padding-bottom: 72px; gap: 48px; }
       .white-approach-copy { text-align: left; }
       .white-approach-copy .white-kicker { position: static; margin-bottom: 28px; }
       .white-approach-text { margin: 0; max-width: 620px; }
-      .white-ring-stage {
-        position: static;
-        width: 100%;
-        margin-top: 48px;
-        transform: none;
-      }
-      .white-ring-stage.reveal.reveal-armed { transform: translateY(22px); }
-      .white-ring-stage.reveal.reveal-armed.in-view { transform: none; }
+      .white-ring-stage { width: 100%; margin: 0; }
 
       .white-map-panel .white-shell { padding-top: 96px; padding-bottom: 72px; }
       .white-map-copy { width: 100%; }
