@@ -3340,9 +3340,27 @@
       background: linear-gradient(180deg, #dceefe, #f7fbfe 58%, #caddeb);
       border-radius: 7px;
     }
-    .white-city-thumb svg { position: absolute; inset: auto 0 0; width: 100%; height: 82%; color: #597994; }
+    /* Снимки взяты у разных авторов и сильно расходятся по времени суток и цвету.
+       Общая обработка — приглушить насыщенность и увести в холодный синий —
+       собирает их в один ряд с остальным сайтом. */
+    .white-city-thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(.34) brightness(1.22) contrast(.86);
+    }
+    .white-city-thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(214,232,248,.34), rgba(176,206,234,.30));
+    }
     .white-recommend {
       position: absolute;
+      z-index: 2;
       top: 9px;
       right: 9px;
       padding: 5px 8px;
@@ -3872,9 +3890,9 @@
         </article>
 
         <article class="white-destination-card">
-          <div class="white-city-thumb" aria-hidden="true">
+          <div class="white-city-thumb">
             <span class="white-recommend" data-i18n="whiteRecommended">Рекомендуем</span>
-            <svg viewBox="0 0 240 100" fill="none"><path d="M0 87h240M26 87V52h34v35M39 52V22h9v30M35 22h17M42 16h4M83 87V58h30v29M93 58V37h10v21M128 87V48h20v39M138 48V12M134 12h8M165 87V61h46v26M175 61V43h9v18M199 61V34h8v27" stroke="currentColor" stroke-width="2"/><path d="M0 91h240" stroke="#62B5FF" stroke-width="3"/></svg>
+            <img id="whiteDestPhoto" src="assets/images/cities/osl.jpg" alt="" width="600" height="250" loading="lazy" decoding="async">
           </div>
           <h3 id="whiteDestTitle">Осло, Норвегия</h3><p id="whiteDestAirport">OSL · Gardermoen</p>
           <div class="white-flight-meta"><span id="whiteDestMetaLabel" data-i18n="whiteFlightTimeLabel">В пути</span><strong id="whiteDestMetaValue">Главный хаб</strong></div>
@@ -4344,6 +4362,14 @@
       const whiteNodes = [...document.querySelectorAll('.white-map-node')];
       let whiteCity = 'Осло';
 
+      // Фотографии направлений: Викимедиа, лицензии перечислены в assets/images/cities/CREDITS.md
+      const cityPhoto = {
+        'Осло': 'osl', 'Рейкьявик': 'kef', 'Нью-Йорк': 'jfk', 'Лондон': 'lhr',
+        'Париж': 'cdg', 'Амстердам': 'ams', 'Берлин': 'ber', 'Копенгаген': 'cph',
+        'Стокгольм': 'arn', 'Хельсинки': 'hel', 'Эр-Рияд': 'ruh', 'Пекин': 'pek',
+        'Токио': 'nrt',
+      };
+
       const renderWhiteRoute = city => {
         whiteCity = city;
         const copy = translations[currentLanguage];
@@ -4361,6 +4387,12 @@
 
         document.getElementById('whiteDestTitle').textContent = `${cityName}, ${countryName}`;
         document.getElementById('whiteDestAirport').textContent = `${flight.code} · ${flight.airport}`;
+        const photo = document.getElementById('whiteDestPhoto');
+        const slug = cityPhoto[city];
+        if (photo && slug) {
+          photo.src = `assets/images/cities/${slug}.jpg`;
+          photo.alt = currentLanguage === 'en' ? `${cityName}, ${countryName}` : `${cityName}, ${countryName}`;
+        }
         document.getElementById('whiteDestMetaLabel').textContent = isHub ? copy.whiteHubMetaLabel : copy.whiteFlightTimeLabel;
         document.getElementById('whiteDestMetaValue').textContent = isHub
           ? copy.whiteHubMetaValue
