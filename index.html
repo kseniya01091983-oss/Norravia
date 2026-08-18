@@ -2915,32 +2915,30 @@
       background: #f6faff;
     }
 
-    .white-duo::before {
+    /* В исходном файле две сцены склеены встык ровно на середине: сверху самолёт,
+       снизу облака. Раньше картинка растягивалась сразу на оба экрана, а стык
+       замазывался размытой полосой — но её положение считалось от высоты блока,
+       а положение стыка от ширины окна, поэтому совпадали они лишь при одной
+       пропорции окна.
+       Теперь каждый экран показывает свою сцену. Слой вдвое выше экрана и
+       заполняется по правилу cover, а значит середина изображения — то есть стык —
+       всегда приходится ровно на границу между экранами и не видна. */
+    .white-hero::after,
+    .white-approach::after {
       content: "";
       position: absolute;
-      inset: 0;
+      left: 0;
+      right: 0;
+      height: 200%;
       z-index: -2;
+      pointer-events: none;
       background-image: url("assets/images/norravia-white-shared-background.webp");
       background-repeat: no-repeat;
-      background-position: center top;
-      background-size: 100% auto;
-      transform: translate3d(0, var(--white-cloud-shift, 0px), 0) scale(1.002);
-      transform-origin: center top;
-      will-change: transform;
+      background-position: center;
+      background-size: cover;
     }
-
-    .white-duo::after {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      top: 39%;
-      left: -3%;
-      width: 106%;
-      height: 15%;
-      pointer-events: none;
-      background: linear-gradient(180deg, rgba(247,250,254,0), rgba(247,250,254,.9) 36%, rgba(247,250,254,.98) 58%, rgba(247,250,254,0));
-      filter: blur(20px);
-    }
+    .white-hero::after { top: 0; }
+    .white-approach::after { bottom: 0; }
 
     .white-hero .white-shell { padding-top: clamp(168px, 17vh, 214px); }
 
@@ -3361,11 +3359,10 @@
       .white-shell { width: min(100%, calc(100% - 72px)); }
       .white-panel { height: auto; min-height: 0; }
 
-      /* Общий вертикальный фон собран из двух сцен 16:9 и не покрывает выросшую по высоте
-         узкую раскладку. Полоса ниже кадрирует только верхнюю сцену с самолётом: её высота
-         составляет 51% от высоты отрисованного фона на любой ширине окна. */
-      .white-duo::before,
-      .white-duo::after { display: none; }
+      /* На узком экране заполнение по ширине обрезало бы самолёт по бокам, поэтому
+         фон-слои отключаются, а верхняя сцена показывается отдельной полосой. */
+      .white-hero::after,
+      .white-approach::after { display: none; }
       .white-hero::before {
         content: "";
         position: absolute;
@@ -3485,15 +3482,7 @@
       .white-country-strip { margin-inline: -20px; padding-inline: 20px; }
     }
 
-    @keyframes white-air-drift {
-      0%, 100% { background-position: center 0; }
-      50% { background-position: center -8px; }
-    }
-    html[data-design="white"] .white-duo { animation: white-air-drift 14s ease-in-out infinite; }
-
     @media (prefers-reduced-motion: reduce) {
-      html[data-design="white"] .white-duo { animation: none; }
-      .white-duo::before { transform: none !important; }
       .white-ring,
       .white-route { transition: none !important; stroke-dashoffset: 0 !important; }
       .white-button { transition: none; }
@@ -4141,8 +4130,6 @@
           const heroProgress = Math.min(y / Math.max(window.innerHeight, 1), 1);
           document.documentElement.style.setProperty('--hero-shift', `${(heroProgress * 26).toFixed(2)}px`);
           document.documentElement.style.setProperty('--hero-ticket-shift', `${(heroProgress * -34).toFixed(2)}px`);
-          const whiteProgress = Math.min(y / Math.max(window.innerHeight * 2, 1), 1);
-          document.documentElement.style.setProperty('--white-cloud-shift', `${(whiteProgress * -14).toFixed(2)}px`);
         }
 
         const planeShouldBeVisible = y > window.innerHeight * .45;
