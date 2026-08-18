@@ -3340,23 +3340,14 @@
       background: linear-gradient(180deg, #dceefe, #f7fbfe 58%, #caddeb);
       border-radius: 7px;
     }
-    /* Снимки взяты у разных авторов и сильно расходятся по времени суток и цвету.
-       Общая обработка — приглушить насыщенность и увести в холодный синий —
-       собирает их в один ряд с остальным сайтом. */
+    /* Фотографии показываются по одной, поэтому приводить их к общему цвету не нужно:
+       день и ночь у разных городов — это нормально. Обработки нет намеренно. */
     .white-city-thumb img {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: saturate(.34) brightness(1.22) contrast(.86);
-    }
-    .white-city-thumb::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: linear-gradient(180deg, rgba(214,232,248,.34), rgba(176,206,234,.30));
     }
     .white-recommend {
       position: absolute;
