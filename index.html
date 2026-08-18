@@ -2886,7 +2886,6 @@
       --white-accent: #62b5ff;
       --white-surface: rgba(251, 253, 255, .88);
       position: relative;
-      min-width: 1180px;
       overflow: hidden;
       color: var(--white-ink);
       background: #f5f9fd;
@@ -3221,8 +3220,10 @@
     }
     .white-map-art.reveal-armed .white-route { stroke-dashoffset: 980; }
     .white-map-art.reveal-armed.in-view .white-route { stroke-dashoffset: 0; }
-    .white-map-node circle:first-child { fill: #fff; stroke: #61b3ff; stroke-width: 1.4; }
-    .white-map-node circle:last-child { fill: #62b5ff; }
+    .white-map-node { cursor: pointer; }
+    .white-map-node .white-node-hit { fill: transparent; stroke: none; }
+    .white-map-node .white-node-ring { fill: #fff; stroke: #61b3ff; stroke-width: 1.4; transition: stroke-width 220ms ease; }
+    .white-map-node .white-node-dot { fill: #62b5ff; }
     .white-map-node text {
       fill: #253a4b;
       font-family: "Manrope", sans-serif;
@@ -3231,8 +3232,13 @@
       letter-spacing: .04em;
     }
     .white-map-node .city-sub { fill: #526879; font-size: 10px; font-weight: 500; letter-spacing: 0; }
-    .white-map-node--hub circle:first-child { stroke-width: 2; }
-    .white-map-node--hub circle:last-child { fill: #fff; stroke: #62b5ff; stroke-width: 3; }
+    .white-map-node:hover .white-node-ring,
+    .white-map-node.active .white-node-ring { stroke-width: 2.8; }
+    .white-map-node.active text { fill: #12222f; }
+    .white-map-node:focus { outline: none; }
+    .white-map-node:focus-visible .white-node-hit { fill: rgba(98,181,255,.16); stroke: #62b5ff; stroke-width: 2; }
+    .white-map-node--hub .white-node-ring { stroke-width: 2; }
+    .white-map-node--hub .white-node-dot { fill: #fff; stroke: #62b5ff; stroke-width: 3; }
 
     .white-hub-card,
     .white-destination-card {
@@ -3313,19 +3319,168 @@
       bottom: 28px;
       display: flex;
       gap: 12px;
-      overflow: hidden;
+      padding-bottom: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
       white-space: nowrap;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x proximity;
     }
+    /* Подсказка о прокрутке; снимается при фокусе, чтобы не гасить кольцо фокуса у крайней кнопки. */
+    .white-country-strip:not(:focus-within) { mask-image: linear-gradient(90deg, #000 92%, transparent); }
+    .white-country-strip::-webkit-scrollbar { display: none; }
     .white-country-chip {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
       min-height: 43px;
       padding: 0 22px;
+      cursor: pointer;
       color: #465a6b;
       background: rgba(251,253,255,.76);
       border: 1px solid rgba(50,82,106,.14);
       border-radius: 999px;
       font: 500 .72rem/1 "Manrope", sans-serif;
     }
+    .white-country-chip:hover { color: #23405a; border-color: rgba(50,82,106,.34); }
+    .white-country-chip:focus-visible { outline: 3px solid rgba(98,181,255,.5); outline-offset: 3px; }
     .white-country-chip.active { color: #267fcf; border-color: #62b5ff; background: rgba(242,250,255,.94); }
+
+    .white-facts { display: none; }
+
+    @media (max-width: 1180px) {
+      .white-shell { width: min(100%, calc(100% - 72px)); }
+      .white-panel { height: auto; min-height: 0; }
+
+      /* Общий вертикальный фон собран из двух сцен 16:9 и не покрывает выросшую по высоте
+         узкую раскладку. Полоса ниже кадрирует только верхнюю сцену с самолётом: её высота
+         составляет 51% от высоты отрисованного фона на любой ширине окна. */
+      .white-duo::before,
+      .white-duo::after { display: none; }
+      .white-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto;
+        aspect-ratio: 3712 / 2350;
+        pointer-events: none;
+        background-image:
+          linear-gradient(180deg, rgba(246,250,255,0) 52%, rgba(246,250,255,.86) 84%, #f6faff 100%),
+          url("assets/images/norravia-white-shared-background.webp");
+        background-repeat: no-repeat;
+        background-position: center top;
+        background-size: 100% 100%, 100% auto;
+      }
+
+      .white-hero .white-shell { padding-top: calc(54vw + 24px); padding-bottom: 72px; }
+      .white-hero-copy { width: 100%; max-width: 560px; }
+      .white-hero h1 { font-size: clamp(3.6rem, 8vw, 5rem); }
+      .white-route-code,
+      .white-flight-arc,
+      .white-flight-data { display: none; }
+
+      .white-approach .white-shell { padding-top: 72px; padding-bottom: 72px; }
+      .white-approach-copy { text-align: left; }
+      .white-approach-copy .white-kicker { position: static; margin-bottom: 28px; }
+      .white-approach-text { margin: 0; max-width: 620px; }
+      .white-ring-stage {
+        position: static;
+        width: 100%;
+        margin-top: 48px;
+        transform: none;
+      }
+      .white-ring-stage.reveal.reveal-armed { transform: translateY(22px); }
+      .white-ring-stage.reveal.reveal-armed.in-view { transform: none; }
+
+      .white-map-panel .white-shell { padding-top: 96px; padding-bottom: 72px; }
+      .white-map-copy { width: 100%; }
+      .white-map-copy h2 { font-size: clamp(2.8rem, 6vw, 4rem); }
+      .white-map-copy p:last-child { max-width: 560px; }
+      .white-map-art {
+        position: relative;
+        inset: auto;
+        margin: 32px -24px 0;
+        aspect-ratio: 1100 / 650;
+      }
+      .white-hub-card,
+      .white-destination-card {
+        position: static;
+        width: 100%;
+        margin-top: 24px;
+      }
+      .white-hub-card { max-width: 560px; }
+      .white-destination-card { max-width: 320px; }
+      .white-country-strip {
+        position: static;
+        margin: 32px -36px 0;
+        padding-inline: 36px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .white-shell { width: calc(100% - 40px); }
+      .white-hero .white-shell { padding-top: calc(63.3vw + 28px); padding-bottom: 56px; }
+      .white-hero h1 { max-width: none; font-size: clamp(3rem, 15vw, 4.2rem); margin-bottom: 28px; }
+      .white-kicker { gap: 14px; margin-bottom: 28px; font-size: .64rem; letter-spacing: .22em; }
+      .white-tagline { font-size: 1.12rem; margin-bottom: 20px; }
+      .white-hero-lead { font-size: .92rem; line-height: 1.7; }
+      .white-actions { flex-direction: column; gap: 12px; margin-top: 32px; }
+      .white-button { width: 100%; min-width: 0; min-height: 56px; }
+      .white-launch-line { margin-top: 40px; gap: 14px; font-size: .62rem; }
+      .white-launch-symbol { width: 40px; height: 40px; }
+
+      .white-approach .white-shell { padding-top: 56px; padding-bottom: 56px; }
+      .white-approach-text { font-size: .98rem; }
+      .white-ring-stage { display: none; }
+      .white-facts {
+        display: grid;
+        gap: 20px;
+        margin-top: 40px;
+      }
+      .white-fact {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(49,78,99,.14);
+      }
+      .white-fact:last-child { border-bottom: none; padding-bottom: 0; }
+      .white-fact dt,
+      .white-fact dd { margin: 0; }
+      .white-fact strong {
+        color: var(--white-ink);
+        font: 400 2.6rem/1 "Bodoni Moda", "Bodoni 72", Didot, serif;
+        letter-spacing: -.03em;
+      }
+      .white-fact span {
+        color: #56697a;
+        font-size: .64rem;
+        font-weight: 600;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+      }
+
+      .white-map-panel .white-shell { padding-top: 72px; padding-bottom: 56px; }
+      .white-map-art { display: none; }
+      .white-hub-card {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 22px;
+        min-height: 0;
+      }
+      .white-hub-count {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        padding-left: 0;
+        padding-top: 16px;
+        border-left: none;
+        border-top: 1px solid rgba(49,78,99,.15);
+        text-align: left;
+      }
+      .white-hub-count strong { font-size: 2.1rem; }
+      .white-destination-card { max-width: none; }
+      .white-country-strip { margin-inline: -20px; padding-inline: 20px; }
+    }
 
     @keyframes white-air-drift {
       0%, 100% { background-position: center 0; }
@@ -3630,6 +3785,12 @@
               <text class="white-metric-label" x="1170" y="384" data-i18n="whiteStatLaunch">первый вылет</text>
             </svg>
           </div>
+
+          <dl class="white-facts">
+            <div class="white-fact"><dt><strong>12</strong></dt><dd><span data-i18n="whiteStatRoutes">направлений</span></dd></div>
+            <div class="white-fact"><dt><strong>OSL</strong></dt><dd><span data-i18n="whiteStatHub">главный хаб</span></dd></div>
+            <div class="white-fact"><dt><strong>2026</strong></dt><dd><span data-i18n="whiteStatLaunch">первый вылет</span></dd></div>
+          </dl>
         </div>
       </section>
     </div>
@@ -3660,28 +3821,30 @@
               <path class="white-route" d="M523 209Q530 275 514 392"/>
               <path class="white-route" d="M523 209Q571 330 628 507"/>
               <path class="white-route" d="M523 209Q573 126 623 133"/>
+              <path class="white-route" d="M523 209Q551 183 587 186"/>
               <path class="white-route" d="M523 209Q540 226 550 258"/>
               <path class="white-route" d="M523 209Q749 162 940 293"/>
               <path class="white-route" d="M523 209Q784 201 995 387"/>
             </g>
-            <g class="white-map-node white-map-node--hub" transform="translate(523 209)"><circle r="12"/><circle r="4"/><text x="-10" y="-25">OSL</text><text class="city-sub" x="-10" y="-10" data-i18n="cityOslo">Осло</text></g>
-            <g class="white-map-node" transform="translate(244 162)"><circle r="7"/><circle r="2"/><text x="11" y="18">KEF</text><text class="city-sub" x="11" y="32" data-i18n="cityReykjavik">Рейкьявик</text></g>
-            <g class="white-map-node" transform="translate(76 351)"><circle r="7"/><circle r="2"/><text x="-4" y="-17">JFK</text><text class="city-sub" x="-4" y="-4" data-i18n="cityNewYork">Нью-Йорк</text></g>
-            <g class="white-map-node" transform="translate(367 332)"><circle r="7"/><circle r="2"/><text x="10" y="-12">LHR</text><text class="city-sub" x="10" y="2" data-i18n="cityLondon">Лондон</text></g>
-            <g class="white-map-node" transform="translate(411 414)"><circle r="7"/><circle r="2"/><text x="10" y="22">CDG</text><text class="city-sub" x="10" y="36" data-i18n="cityParis">Париж</text></g>
-            <g class="white-map-node" transform="translate(462 340)"><circle r="7"/><circle r="2"/><text x="10" y="-12">AMS</text><text class="city-sub" x="10" y="2" data-i18n="cityAmsterdam">Амстердам</text></g>
-            <g class="white-map-node" transform="translate(514 392)"><circle r="7"/><circle r="2"/><text x="10" y="22">FRA</text><text class="city-sub" x="10" y="36" data-i18n="cityFrankfurt">Франкфурт</text></g>
-            <g class="white-map-node" transform="translate(628 507)"><circle r="7"/><circle r="2"/><text x="10" y="22">RUH</text><text class="city-sub" x="10" y="36" data-i18n="cityRiyadh">Эр-Рияд</text></g>
-            <g class="white-map-node" transform="translate(623 133)"><circle r="7"/><circle r="2"/><text x="10" y="-8">HEL</text><text class="city-sub" x="10" y="7" data-i18n="cityHelsinki">Хельсинки</text></g>
-            <g class="white-map-node" transform="translate(550 258)"><circle r="7"/><circle r="2"/><text x="10" y="22">CPH</text><text class="city-sub" x="10" y="36" data-i18n="cityCopenhagen">Копенгаген</text></g>
-            <g class="white-map-node" transform="translate(940 293)"><circle r="7"/><circle r="2"/><text x="10" y="-10">PEK</text><text class="city-sub" x="10" y="4" data-i18n="cityBeijing">Пекин</text></g>
-            <g class="white-map-node" transform="translate(995 387)"><circle r="7"/><circle r="2"/><text x="10" y="-10">NRT</text><text class="city-sub" x="10" y="4" data-i18n="cityTokyo">Токио</text></g>
+            <g class="white-map-node white-map-node--hub" data-city="Осло" transform="translate(523 209)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="12"/><circle class="white-node-dot" r="4"/><text x="-10" y="-25">OSL</text><text class="city-sub" x="-10" y="-10">Осло</text></g>
+            <g class="white-map-node" data-city="Рейкьявик" transform="translate(244 162)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="11" y="18">KEF</text><text class="city-sub" x="11" y="32">Рейкьявик</text></g>
+            <g class="white-map-node" data-city="Нью-Йорк" transform="translate(76 351)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="-4" y="-17">JFK</text><text class="city-sub" x="-4" y="-4">Нью-Йорк</text></g>
+            <g class="white-map-node" data-city="Лондон" transform="translate(367 332)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="10" y="-12">LHR</text><text class="city-sub" x="10" y="2">Лондон</text></g>
+            <g class="white-map-node" data-city="Париж" transform="translate(411 414)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="10" y="22">CDG</text><text class="city-sub" x="10" y="36">Париж</text></g>
+            <g class="white-map-node" data-city="Амстердам" transform="translate(462 340)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="10" y="-12">AMS</text><text class="city-sub" x="10" y="2">Амстердам</text></g>
+            <g class="white-map-node" data-city="Берлин" transform="translate(514 392)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="10" y="22">BER</text><text class="city-sub" x="10" y="36">Берлин</text></g>
+            <g class="white-map-node" data-city="Эр-Рияд" transform="translate(628 507)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="10" y="22">RUH</text><text class="city-sub" x="10" y="36">Эр-Рияд</text></g>
+            <g class="white-map-node" data-city="Хельсинки" transform="translate(623 133)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="10" y="-8">HEL</text><text class="city-sub" x="10" y="7">Хельсинки</text></g>
+            <g class="white-map-node" data-city="Стокгольм" transform="translate(587 186)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="10" y="-8">ARN</text><text class="city-sub" x="10" y="7">Стокгольм</text></g>
+            <g class="white-map-node" data-city="Копенгаген" transform="translate(550 258)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="10" y="22">CPH</text><text class="city-sub" x="10" y="36">Копенгаген</text></g>
+            <g class="white-map-node" data-city="Пекин" transform="translate(940 293)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="10" y="-10">PEK</text><text class="city-sub" x="10" y="4">Пекин</text></g>
+            <g class="white-map-node" data-city="Токио" transform="translate(995 387)"><circle class="white-node-hit" r="22"/><circle class="white-node-ring" r="7"/><circle class="white-node-dot" r="2"/><text x="10" y="-10">NRT</text><text class="city-sub" x="10" y="4">Токио</text></g>
           </svg>
         </div>
 
         <article class="white-hub-card">
           <span class="white-hub-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="m4 23 7-11 5 7 4-6 8 10M9 23h18" stroke="currentColor" stroke-width="1.2"/></svg></span>
-          <div><span class="white-card-label" data-i18n="whiteHubLabel">Главный хаб Norravia</span><h3 data-i18n="whiteHubTitle">Осло, Норвегия</h3><p data-i18n="whiteHubBody">Современный хаб в сердце Скандинавии. Быстрые стыковки, премиальный сервис и продуманная логистика.</p></div>
+          <div><span class="white-card-label" id="whiteCountryLabel">Главный хаб Norravia</span><h3 id="whiteCountryTitle">Норвегия</h3><p id="whiteCountryBody">Страна фьордов, северного сияния и спокойного скандинавского ритма. Отсюда начинается история Norravia.</p></div>
           <div class="white-hub-count"><strong>12</strong><span data-i18n-html="whiteHubRoutes">международных<br>маршрутов</span></div>
         </article>
 
@@ -3690,22 +3853,25 @@
             <span class="white-recommend" data-i18n="whiteRecommended">Рекомендуем</span>
             <svg viewBox="0 0 240 100" fill="none"><path d="M0 87h240M26 87V52h34v35M39 52V22h9v30M35 22h17M42 16h4M83 87V58h30v29M93 58V37h10v21M128 87V48h20v39M138 48V12M134 12h8M165 87V61h46v26M175 61V43h9v18M199 61V34h8v27" stroke="currentColor" stroke-width="2"/><path d="M0 91h240" stroke="#62B5FF" stroke-width="3"/></svg>
           </div>
-          <h3 data-i18n="whiteDestinationTitle">Лондон, Великобритания</h3><p>LHR · Heathrow</p>
-          <div class="white-flight-meta"><span data-i18n="whiteFlightTimeLabel">В пути</span><strong data-i18n="whiteFlightTime">2ч 35м</strong></div>
+          <h3 id="whiteDestTitle">Осло, Норвегия</h3><p id="whiteDestAirport">OSL · Gardermoen</p>
+          <div class="white-flight-meta"><span id="whiteDestMetaLabel" data-i18n="whiteFlightTimeLabel">В пути</span><strong id="whiteDestMetaValue">Главный хаб</strong></div>
           <div class="white-card-action"><span data-i18n="whiteFlightsButton">Смотреть рейсы</span><span aria-hidden="true">→</span></div>
         </article>
 
         <div class="white-country-strip" aria-label="Направления" data-i18n-aria="destinationList">
-          <button class="white-country-chip active" type="button" data-i18n="chipNorway">Норвегия · хаб</button>
-          <button class="white-country-chip" type="button" data-i18n="chipUnitedKingdom">Великобритания</button>
-          <button class="white-country-chip" type="button" data-i18n="chipFrance">Франция</button>
-          <button class="white-country-chip" type="button" data-i18n="chipUSA">США</button>
-          <button class="white-country-chip" type="button" data-i18n="chipSaudiArabia">Саудовская Аравия</button>
-          <button class="white-country-chip" type="button" data-i18n="chipJapan">Япония</button>
-          <button class="white-country-chip" type="button" data-i18n="chipChina">Китай</button>
-          <button class="white-country-chip" type="button" data-i18n="chipFinland">Финляндия</button>
-          <button class="white-country-chip" type="button" data-i18n="chipDenmark">Дания</button>
-          <button class="white-country-chip" type="button" data-i18n="chipSweden">Швеция</button>
+          <button class="white-country-chip active" type="button" data-city="Осло">Норвегия · хаб</button>
+          <button class="white-country-chip" type="button" data-city="Лондон">Великобритания</button>
+          <button class="white-country-chip" type="button" data-city="Париж">Франция</button>
+          <button class="white-country-chip" type="button" data-city="Нью-Йорк">США</button>
+          <button class="white-country-chip" type="button" data-city="Эр-Рияд">Саудовская Аравия</button>
+          <button class="white-country-chip" type="button" data-city="Токио">Япония</button>
+          <button class="white-country-chip" type="button" data-city="Пекин">Китай</button>
+          <button class="white-country-chip" type="button" data-city="Хельсинки">Финляндия</button>
+          <button class="white-country-chip" type="button" data-city="Копенгаген">Дания</button>
+          <button class="white-country-chip" type="button" data-city="Стокгольм">Швеция</button>
+          <button class="white-country-chip" type="button" data-city="Рейкьявик">Исландия</button>
+          <button class="white-country-chip" type="button" data-city="Амстердам">Нидерланды</button>
+          <button class="white-country-chip" type="button" data-city="Берлин">Германия</button>
         </div>
       </div>
     </section>
@@ -3741,10 +3907,8 @@
           whiteStatRoutes: 'направлений', whiteStatHub: 'главный хаб', whiteStatLaunch: 'первый вылет',
           whiteRoutesKicker: 'Карта полётов', whiteRoutesTitle: 'Из Осло —<br>навстречу миру.',
           whiteRoutesBody: 'Norravia соединяет Норвегию с ключевыми направлениями Европы, Азии и Ближнего Востока. Путешествуйте с комфортом — куда бы ни вели ваши планы.',
-          cityOslo: 'Осло', cityReykjavik: 'Рейкьявик', cityNewYork: 'Нью-Йорк', cityLondon: 'Лондон', cityParis: 'Париж', cityAmsterdam: 'Амстердам', cityFrankfurt: 'Франкфурт', cityRiyadh: 'Эр-Рияд', cityHelsinki: 'Хельсинки', cityCopenhagen: 'Копенгаген', cityBeijing: 'Пекин', cityTokyo: 'Токио',
-          whiteHubLabel: 'Главный хаб Norravia', whiteHubTitle: 'Осло, Норвегия', whiteHubBody: 'Современный хаб в сердце Скандинавии. Быстрые стыковки, премиальный сервис и продуманная логистика.', whiteHubRoutes: 'международных<br>маршрутов',
-          whiteRecommended: 'Рекомендуем', whiteDestinationTitle: 'Лондон, Великобритания', whiteFlightTimeLabel: 'В пути', whiteFlightTime: '2ч 35м', whiteFlightsButton: 'Смотреть рейсы',
-          chipNorway: 'Норвегия · хаб', chipUnitedKingdom: 'Великобритания', chipFrance: 'Франция', chipUSA: 'США', chipSaudiArabia: 'Саудовская Аравия', chipJapan: 'Япония', chipChina: 'Китай', chipFinland: 'Финляндия', chipDenmark: 'Дания', chipSweden: 'Швеция',
+          whiteHubLabel: 'Главный хаб Norravia', whiteDestinationLabel: 'Направление Norravia', whiteHubRoutes: 'международных<br>маршрутов',
+          whiteRecommended: 'Рекомендуем', whiteFlightTimeLabel: 'В пути', whiteHubMetaLabel: 'Статус', whiteHubMetaValue: 'Главный хаб', whiteFlightsButton: 'Смотреть рейсы',
           aboutEyebrow: 'Наш подход', aboutTitle: 'Премиальность без дистанции.',
           aboutBody: 'Norravia родилась в Осло с простой идеей: внимательный сервис и красивое путешествие должны быть доступны не только избранным.',
           aboutCaption: 'Норвегия · вид с высоты',
@@ -3788,10 +3952,8 @@
           whiteStatRoutes: 'destinations', whiteStatHub: 'home hub', whiteStatLaunch: 'first flight',
           whiteRoutesKicker: 'Route map', whiteRoutesTitle: 'From Oslo —<br>towards the world.',
           whiteRoutesBody: 'Norravia connects Norway with key destinations across Europe, Asia and the Middle East. Travel in considered comfort, wherever your plans may lead.',
-          cityOslo: 'Oslo', cityReykjavik: 'Reykjavík', cityNewYork: 'New York', cityLondon: 'London', cityParis: 'Paris', cityAmsterdam: 'Amsterdam', cityFrankfurt: 'Frankfurt', cityRiyadh: 'Riyadh', cityHelsinki: 'Helsinki', cityCopenhagen: 'Copenhagen', cityBeijing: 'Beijing', cityTokyo: 'Tokyo',
-          whiteHubLabel: 'Norravia home hub', whiteHubTitle: 'Oslo, Norway', whiteHubBody: 'A contemporary hub in the heart of Scandinavia, with effortless connections, attentive service and considered logistics.', whiteHubRoutes: 'international<br>routes',
-          whiteRecommended: 'Recommended', whiteDestinationTitle: 'London, United Kingdom', whiteFlightTimeLabel: 'Flight time', whiteFlightTime: '2h 35m', whiteFlightsButton: 'View flights',
-          chipNorway: 'Norway · hub', chipUnitedKingdom: 'United Kingdom', chipFrance: 'France', chipUSA: 'USA', chipSaudiArabia: 'Saudi Arabia', chipJapan: 'Japan', chipChina: 'China', chipFinland: 'Finland', chipDenmark: 'Denmark', chipSweden: 'Sweden',
+          whiteHubLabel: 'Norravia home hub', whiteDestinationLabel: 'Norravia destination', whiteHubRoutes: 'international<br>routes',
+          whiteRecommended: 'Recommended', whiteFlightTimeLabel: 'Flight time', whiteHubMetaLabel: 'Status', whiteHubMetaValue: 'Home hub', whiteFlightsButton: 'View flights',
           aboutEyebrow: 'Our approach', aboutTitle: 'Premium without distance.',
           aboutBody: 'Norravia was born in Oslo from one simple idea: attentive service and a beautiful journey should be open to more than a chosen few.',
           aboutCaption: 'Norway · view from above',
@@ -3837,6 +3999,22 @@
         'Берлин': { enCity: 'Berlin', enCountry: 'Germany', enChip: 'Germany', ruChip: 'Германия', ruDescription: 'Страна культурных столиц, сильных традиций и современной городской жизни в самом центре Европы.', enDescription: 'A country of cultural capitals, enduring traditions and contemporary urban life at the heart of Europe.' }
       };
 
+      const whiteFlights = {
+        'Осло': { code: 'OSL', airport: 'Gardermoen' },
+        'Лондон': { code: 'LHR', airport: 'Heathrow', ruTime: '2 ч 35 мин', enTime: '2h 35m' },
+        'Париж': { code: 'CDG', airport: 'Charles de Gaulle', ruTime: '2 ч 25 мин', enTime: '2h 25m' },
+        'Нью-Йорк': { code: 'JFK', airport: 'John F. Kennedy', ruTime: '8 ч 10 мин', enTime: '8h 10m' },
+        'Эр-Рияд': { code: 'RUH', airport: 'King Khalid', ruTime: '6 ч 30 мин', enTime: '6h 30m' },
+        'Токио': { code: 'NRT', airport: 'Narita', ruTime: '10 ч 15 мин', enTime: '10h 15m' },
+        'Пекин': { code: 'PEK', airport: 'Capital', ruTime: '8 ч 45 мин', enTime: '8h 45m' },
+        'Хельсинки': { code: 'HEL', airport: 'Vantaa', ruTime: '1 ч 40 мин', enTime: '1h 40m' },
+        'Копенгаген': { code: 'CPH', airport: 'Kastrup', ruTime: '1 ч 15 мин', enTime: '1h 15m' },
+        'Стокгольм': { code: 'ARN', airport: 'Arlanda', ruTime: '1 ч 05 мин', enTime: '1h 05m' },
+        'Рейкьявик': { code: 'KEF', airport: 'Keflavík', ruTime: '3 ч 05 мин', enTime: '3h 05m' },
+        'Амстердам': { code: 'AMS', airport: 'Schiphol', ruTime: '1 ч 55 мин', enTime: '1h 55m' },
+        'Берлин': { code: 'BER', airport: 'Brandenburg', ruTime: '1 ч 40 мин', enTime: '1h 40m' }
+      };
+
       const storage = {
         get(key, fallback) { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } },
         set(key, value) { try { localStorage.setItem(key, value); } catch {} }
@@ -3856,9 +4034,13 @@
         storage.set('norravia-design', design);
         const isWhite = design === 'white';
         const targets = isWhite
-          ? ['#whiteApproach', '#whiteRoutes', '#whiteApproach', '#whiteRoutes']
+          ? ['#whiteApproach', '#whiteRoutes']
           : ['#about', '#routes', '#comfort', '#launch'];
-        navLinks.querySelectorAll(':scope > a:not(.btn)').forEach((link, index) => { link.href = targets[index]; });
+        navLinks.querySelectorAll(':scope > a:not(.btn)').forEach((link, index) => {
+          const target = targets[index];
+          link.hidden = !target;
+          if (target) link.href = target;
+        });
         const mapButton = navLinks.querySelector('.btn--small');
         if (mapButton) mapButton.href = isWhite ? '#whiteRoutes' : '#routes';
         const headerBrand = document.querySelector('#siteHeader .brand');
@@ -3915,6 +4097,7 @@
         });
         storage.set('norravia-language', language);
         if (activeRouteNode) renderRoute(activeRouteNode, false);
+        renderWhiteRoute(whiteCity);
         closeMenu();
         updateCountdown();
       };
@@ -4135,6 +4318,67 @@
 
       const defaultRouteNode = mapNodes.find(node => node.dataset.city === 'Осло');
       if (defaultRouteNode) renderRoute(defaultRouteNode, false);
+
+      const whiteChips = [...document.querySelectorAll('.white-country-chip')];
+      const whiteNodes = [...document.querySelectorAll('.white-map-node')];
+      let whiteCity = 'Осло';
+
+      const renderWhiteRoute = city => {
+        whiteCity = city;
+        const copy = translations[currentLanguage];
+        const route = routeContent[city];
+        const flight = whiteFlights[city];
+        const isHub = city === 'Осло';
+        const cityName = currentLanguage === 'en' ? route.enCity : city;
+        const countryName = currentLanguage === 'en'
+          ? route.enCountry
+          : mapNodes.find(node => node.dataset.city === city).dataset.country;
+
+        document.getElementById('whiteCountryLabel').textContent = isHub ? copy.whiteHubLabel : copy.whiteDestinationLabel;
+        document.getElementById('whiteCountryTitle').textContent = countryName;
+        document.getElementById('whiteCountryBody').textContent = currentLanguage === 'en' ? route.enDescription : route.ruDescription;
+
+        document.getElementById('whiteDestTitle').textContent = `${cityName}, ${countryName}`;
+        document.getElementById('whiteDestAirport').textContent = `${flight.code} · ${flight.airport}`;
+        document.getElementById('whiteDestMetaLabel').textContent = isHub ? copy.whiteHubMetaLabel : copy.whiteFlightTimeLabel;
+        document.getElementById('whiteDestMetaValue').textContent = isHub
+          ? copy.whiteHubMetaValue
+          : (currentLanguage === 'en' ? flight.enTime : flight.ruTime);
+        document.querySelector('.white-recommend').hidden = isHub;
+
+        whiteChips.forEach(chip => {
+          chip.textContent = currentLanguage === 'en' ? routeContent[chip.dataset.city].enChip : routeContent[chip.dataset.city].ruChip;
+          chip.classList.toggle('active', chip.dataset.city === city);
+          chip.setAttribute('aria-pressed', String(chip.dataset.city === city));
+        });
+
+        whiteNodes.forEach(node => {
+          const nodeCity = node.dataset.city;
+          const nodeRoute = routeContent[nodeCity];
+          node.classList.toggle('active', nodeCity === city);
+          node.setAttribute('aria-label', `${currentLanguage === 'en' ? nodeRoute.enCity : nodeCity}, ${currentLanguage === 'en' ? nodeRoute.enChip : nodeRoute.ruChip}`);
+          const label = node.querySelector('.city-sub');
+          if (label) label.textContent = currentLanguage === 'en' ? nodeRoute.enCity : nodeCity;
+        });
+      };
+
+      whiteChips.forEach(chip => {
+        chip.setAttribute('aria-pressed', 'false');
+        chip.addEventListener('click', () => renderWhiteRoute(chip.dataset.city));
+      });
+
+      whiteNodes.forEach(node => {
+        node.setAttribute('role', 'button');
+        node.setAttribute('tabindex', '0');
+        node.addEventListener('click', () => renderWhiteRoute(node.dataset.city));
+        node.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            renderWhiteRoute(node.dataset.city);
+          }
+        });
+      });
+
 
       const revealElements = document.querySelectorAll('.reveal');
       if ('IntersectionObserver' in window && !reduceMotion) {
