@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Norravia — Палитра оттенков синего</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: #f4f7f9;
+      color: #192b3a;
+      padding: 40px 20px;
+    }
+    .header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 40px;
+    }
+    h1 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 2.6rem;
+      font-weight: 400;
+      color: #12222f;
+      margin-bottom: 12px;
+    }
+    .subtitle {
+      color: #556b7d;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(18, 34, 47, 0.06);
+      border: 1px solid rgba(30, 50, 70, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .card-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+    .card-title h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #152432;
+    }
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: #eaf1f6;
+      color: #3b5368;
+    }
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .swatch {
+      height: 70px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 8px;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+    }
+    .swatch.light { color: #162635; }
+    .swatch span { font-size: 0.6rem; opacity: 0.8; font-weight: 400; }
+    
+    .demo-box {
+      background: #f8fafc;
+      border: 1px solid rgba(30, 50, 70, 0.08);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+    .ring-preview {
+      width: 120px;
+      height: 120px;
+    }
+    .chips-preview {
+      display: flex;
+      gap: 8px;
+    }
+    .sample-chip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* CURRENT OLD COLOR */
+    .c-old-main { background: #62b5ff; }
+    .c-old-light { background: #bfe2ff; }
+    .c-old-dark { background: #1769ff; }
+    .old-ring { stroke: #62b5ff; }
+    .old-dot { fill: #1769ff; }
+    .old-chip { background: #f2faff; border: 1px solid #62b5ff; color: #267fcf; }
+
+    /* 1. NORDIC COBALT */
+    .c-1-main { background: #2c6496; }
+    .c-1-light { background: #82aed4; }
+    .c-1-dark { background: #183f64; }
+    .c1-ring { stroke: #82aed4; }
+    .c1-dot { fill: #2c6496; }
+    .c1-chip { background: #f0f6fa; border: 1px solid #82aed4; color: #183f64; }
+
+    /* 2. GLACIAL TEAL */
+    .c-2-main { background: #3c8699; }
+    .c-2-light { background: #8fc5ce; }
+    .c-2-dark { background: #1b4e5b; }
+    .c2-ring { stroke: #8fc5ce; }
+    .c2-dot { fill: #3c8699; }
+    .c2-chip { background: #f0f7f8; border: 1px solid #8fc5ce; color: #1b4e5b; }
+
+    /* 3. SLATE INDIGO */
+    .c-3-main { background: #43617e; }
+    .c-3-light { background: #94abc0; }
+    .c-3-dark { background: #1e3245; }
+    .c3-ring { stroke: #94abc0; }
+    .c3-dot { fill: #43617e; }
+    .c3-chip { background: #f2f5f8; border: 1px solid #94abc0; color: #1e3245; }
+
+    /* 4. ROYAL ULTRAMARINE */
+    .c-4-main { background: #1e56b3; }
+    .c-4-light { background: #709de8; }
+    .c-4-dark { background: #123675; }
+    .c4-ring { stroke: #709de8; }
+    .c4-dot { fill: #1e56b3; }
+    .c4-chip { background: #edf4fe; border: 1px solid #709de8; color: #123675; }
+
+    .desc {
+      font-size: 0.85rem;
+      color: #526779;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Палитра синих оттенков Norravia</h1>
+    <p class="subtitle">Сравнение текущего цвета и 4 благородных премиальных вариантов для кругов, кнопок и карты.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- 0. CURRENT -->
+    <div class="card" style="opacity: 0.85; border-style: dashed;">
+      <div class="card-title">
+        <h2>0. Текущий цвет</h2>
+        <span class="tag" style="background: #fed7d7; color: #9b2c2c;">Сейчас на сайте</span>
+      </div>
+      <div class="swatches">
+        <div class="swatch c-old-light light">#bfe2ff <span>Светлый</span></div>
+        <div class="swatch c-old-main">#62b5ff <span>Основной</span></div>
+        <div class="swatch c-old-dark">#1769ff <span>Тёмный</span></div>
+      </div>
+      <div class="demo-box">
+        <svg class="ring-preview" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="48" fill="none" class="old-ring" stroke-width="2" stroke-dasharray="240 30"/>
+          <circle cx="95" cy="95" r="4.5" class="old-dot"/>
+          <text x="60" y="66" text-anchor="middle" font-family="'Bodoni Moda', serif" font-size="24" fill="#1b2d3d">12</text>
+        </svg>
+        <div class="chips-preview">
+          <span class="sample-chip old-chip">Норвегия · хаб</span>
+        </div>
+      </div>
+      <p class="desc">Яркий небесно-голубой, немного неоновый и стандартный.</p>
+    </div>
+
+    <!-- 1. NORDIC COBALT -->
+    <div class="card" style="border: 2px solid #2c6496;">
+      <div class="card-title">
+        <h2>1. Норвежский кобальт</h2>
+        <span class="tag" style="background: #e2f0fb; color: #183f64; font-weight: 700;">★ Рекомендую</span>
+      </div>
+      <div class="swatches">
+        <div class="swatch c-1-light light">#82aed4 <span>Кольца/контур</span></div>
+        <div class="swatch c-1-main">#2c6496 <span>Акцент/точка</span></div>
+        <div class="swatch c-1-dark">#183f64 <span>Глубокий текст</span></div>
+      </div>
+      <div class="demo-box">
+        <svg class="ring-preview" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="48" fill="none" class="c1-ring" stroke-width="2" stroke-dasharray="240 30"/>
+          <circle cx="95" cy="95" r="4.5" class="c1-dot"/>
+          <text x="60" y="66" text-anchor="middle" font-family="'Bodoni Moda', serif" font-size="24" fill="#183f64">12</text>
+        </svg>
+        <div class="chips-preview">
+          <span class="sample-chip c1-chip">Норвегия · хаб</span>
+        </div>
+      </div>
+      <p class="desc">Классический строгий авиационный синий. Выглядит дорого, породисто и спокойно, идеально для премиум-авиакомпании.</p>
+    </div>
+
+    <!-- 2. GLACIAL TEAL -->
+    <div class="card">
+      <div class="card-title">
+        <h2>2. Ледниковый фьорд</h2>
+        <span class="tag" style="background: #e3f5f8; color: #1b4e5b;">Северный модерн</span>
+      </div>
+      <div class="swatches">
+        <div class="swatch c-2-light light">#8fc5ce <span>Кольца/контур</span></div>
+        <div class="swatch c-2-main">#3c8699 <span>Акцент/точка</span></div>
+        <div class="swatch c-2-dark">#1b4e5b <span>Глубокий текст</span></div>
+      </div>
+      <div class="demo-box">
+        <svg class="ring-preview" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="48" fill="none" class="c2-ring" stroke-width="2" stroke-dasharray="240 30"/>
+          <circle cx="95" cy="95" r="4.5" class="c2-dot"/>
+          <text x="60" y="66" text-anchor="middle" font-family="'Bodoni Moda', serif" font-size="24" fill="#1b4e5b">12</text>
+        </svg>
+        <div class="chips-preview">
+          <span class="sample-chip c2-chip">Норвегия · хаб</span>
+        </div>
+      </div>
+      <p class="desc">Холодный цвет талой ледниковой воды с тонкой морской ноткой. Свежий, природный норвежский акцент.</p>
+    </div>
+
+    <!-- 3. SLATE INDIGO -->
+    <div class="card">
+      <div class="card-title">
+        <h2>3. Скандинавский сланец</h2>
+        <span class="tag" style="background: #edf2f7; color: #1e3245;">Quiet Luxury</span>
+      </div>
+      <div class="swatches">
+        <div class="swatch c-3-light light">#94abc0 <span>Кольца/контур</span></div>
+        <div class="swatch c-3-main">#43617e <span>Акцент/точка</span></div>
+        <div class="swatch c-3-dark">#1e3245 <span>Глубокий текст</span></div>
+      </div>
+      <div class="demo-box">
+        <svg class="ring-preview" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="48" fill="none" class="c3-ring" stroke-width="2" stroke-dasharray="240 30"/>
+          <circle cx="95" cy="95" r="4.5" class="c3-dot"/>
+          <text x="60" y="66" text-anchor="middle" font-family="'Bodoni Moda', serif" font-size="24" fill="#1e3245">12</text>
+        </svg>
+        <div class="chips-preview">
+          <span class="sample-chip c3-chip">Норвегия · хаб</span>
+        </div>
+      </div>
+      <p class="desc">Бархатистый серо-синий индиго. Максимально ненавязчивый, сдержанный и утончённый минимализм.</p>
+    </div>
+
+    <!-- 4. ROYAL ULTRAMARINE -->
+    <div class="card">
+      <div class="card-title">
+        <h2>4. Сапфир / Ультрамарин</h2>
+        <span class="tag" style="background: #e8f0fe; color: #123675;">Флагманский</span>
+      </div>
+      <div class="swatches">
+        <div class="swatch c-4-light light">#709de8 <span>Кольца/контур</span></div>
+        <div class="swatch c-4-main">#1e56b3 <span>Акцент/точка</span></div>
+        <div class="swatch c-4-dark">#123675 <span>Глубокий текст</span></div>
+      </div>
+      <div class="demo-box">
+        <svg class="ring-preview" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="48" fill="none" class="c4-ring" stroke-width="2" stroke-dasharray="240 30"/>
+          <circle cx="95" cy="95" r="4.5" class="c4-dot"/>
+          <text x="60" y="66" text-anchor="middle" font-family="'Bodoni Moda', serif" font-size="24" fill="#123675">12</text>
+        </svg>
+        <div class="chips-preview">
+          <span class="sample-chip c4-chip">Норвегия · хаб</span>
+        </div>
+      </div>
+      <p class="desc">Чистый глубокий синий без примесей серого или зелёного. Яркий, энергичный и престижный.</p>
+    </div>
+
+  </div>
+
+</body>
+</html>
