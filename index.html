@@ -2960,17 +2960,6 @@
       -webkit-mask-image: linear-gradient(180deg, #000 90%, rgba(0,0,0,.4) 96%, transparent 100%);
     }
 
-    /* Светлая вуаль слева: текст первого экрана лежит на фотографии, и корпус
-       самолёта заходит под него. Вуаль поднимает читаемость, не трогая кадр. */
-    .white-hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background: linear-gradient(100deg, rgba(246,250,255,.96) 0%, rgba(246,250,255,.88) 26%, rgba(246,250,255,.52) 42%, rgba(246,250,255,.18) 54%, transparent 64%);
-    }
-
     .white-hero .white-shell { padding-top: clamp(168px, 17vh, 214px); }
 
     .white-hero-copy {
@@ -3185,7 +3174,6 @@
     .white-ring-stage.reveal-armed .white-ring { stroke-dashoffset: calc(var(--ring-offset) + 1450px); }
     .white-ring-stage.reveal-armed.in-view .white-ring { stroke-dashoffset: var(--ring-offset); }
     .white-ring-dot { fill: #1b2d3d; }
-    .white-ring-dot--accent { fill: #62b5ff; }
     .white-metric-value {
       fill: #1b2d3d;
       font-size: 76px;
@@ -3503,7 +3491,6 @@
         content: "";
         position: absolute;
         inset: 0 0 auto;
-        z-index: auto;
         aspect-ratio: 5504 / 3072;
         pointer-events: none;
         background-image:
@@ -3899,7 +3886,7 @@
               <circle class="white-ring white-ring--one" cx="330" cy="340" r="250"/>
               <circle class="white-ring white-ring--two" cx="750" cy="340" r="250"/>
               <circle class="white-ring white-ring--three" cx="1170" cy="340" r="250"/>
-              <circle class="white-ring-dot" cx="283" cy="588" r="4"/><circle class="white-ring-dot" cx="1294" cy="562" r="4"/><circle class="white-ring-dot" cx="899" cy="552" r="4"/><circle class="white-ring-dot white-ring-dot--accent" cx="863" cy="580" r="4.5"/>
+              <circle class="white-ring-dot" cx="283" cy="586" r="4"/><circle class="white-ring-dot" cx="1292" cy="558" r="4"/><circle class="white-ring-dot" cx="894" cy="545" r="4"/>
               <text class="white-metric-value" x="330" y="334">12</text>
               <text class="white-metric-label" x="330" y="384" data-i18n="whiteStatRoutes">направлений</text>
               <text class="white-metric-value" x="750" y="334">OSL</text>
